@@ -29,6 +29,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "swisseph": [
+        "./src/server/providers/ephemeris/swissephStub.ts"
       ]
     }
   },
