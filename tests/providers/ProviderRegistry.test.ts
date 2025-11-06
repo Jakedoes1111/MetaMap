@@ -17,7 +17,19 @@ describe("ProviderRegistry", () => {
   it("returns registered provider", () => {
     resetProviders();
     const stub: EphemerisProvider = {
-      getPositions: async () => [],
+      getEphemeris: async () => ({
+        positions: [],
+        cusps: [],
+        angles: {
+          ascendant: 0,
+          descendant: 180,
+          midheaven: 90,
+          imumCoeli: 270,
+        },
+        metadata: {
+          zodiac: "tropical",
+        },
+      }),
     };
     registerProvider({ key: "ephemeris", provider: stub });
     expect(getProvider("ephemeris")).toBe(stub);

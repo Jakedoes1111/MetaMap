@@ -58,6 +58,9 @@ describe("DataImporter", () => {
 
     const input = screen.getByLabelText(/Drop file or select/i);
     const file = new File(["person_id"], "sample.csv", { type: "text/csv" });
+    Object.defineProperty(file, "text", {
+      value: vi.fn(() => Promise.resolve("person_id")),
+    });
 
     fireEvent.change(input, { target: { files: [file] } });
 

@@ -1,5 +1,6 @@
 import type { DateTime } from "luxon";
 import type { EphemerisOptions, EphemerisProvider, PlanetPosition } from "@/calculators";
+import type { EphemerisResponse } from "@/lib/ephemeris";
 
 const PLANETS = [
   "Sun",
@@ -25,11 +26,11 @@ const wrapDegrees = (value: number) => {
  * exercise visualisations without sourcing licensed planetary data.
  */
 export class DemoEphemerisProvider implements EphemerisProvider {
-  async getPositions(
+  async getEphemeris(
     birth: DateTime,
     coordinates: { latitude: number; longitude: number },
     options: EphemerisOptions,
-  ): Promise<PlanetPosition[]> {
+  ): Promise<EphemerisResponse> {
     const millis = birth.toMillis();
     const base = millis / (1000 * 60 * 60 * 24); // days since epoch
     const positions: PlanetPosition[] = PLANETS.map((name, index) => {
@@ -42,20 +43,29 @@ export class DemoEphemerisProvider implements EphemerisProvider {
       };
     });
 
-    // Always include Ascendant/Midheaven placeholders for UI consumption.
-    positions.push(
-      {
-        name: options.zodiac === "sidereal" ? "Ascendant (sidereal)" : "Ascendant",
-        longitude: wrapDegrees(coordinates.longitude + 90),
-        house: 1,
-      },
-      {
-        name: "Midheaven",
-        longitude: wrapDegrees(coordinates.longitude + 180),
-        house: 10,
-      },
-    );
+    const ascendant = wrapDegrees(coordinates.longitude + 90);
+    const midheaven = wrapDegrees(coordinates.longitude + 180);
 
-    return positions;
+    const cusps = Array.from({ length: 12 }, (_, index) => ({
+      house: index + 1,
+      longitude: wrapDegrees(ascendant + index * 30 + (options.houseSystem ? index * 0.5 : 0)),
+    }));
+
+    return {
+      positions,
+      cusps,
+      angles: {
+        ascendant,
+        descendant: wrapDegrees(ascendant + 180),
+        midheaven,
+        imumCoeli: wrapDegrees(midheaven + 180),
+      },
+      metadata: {
+        zodiac: options.zodiac,
+        houseSystem: options.houseSystem,
+        ayanamsa: options.ayanamsa,
+        provider: "DemoEphemerisProvider",
+      },
+    };
   }
 }

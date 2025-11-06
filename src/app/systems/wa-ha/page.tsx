@@ -3,12 +3,37 @@
 import { useStore } from "@/store/useStore";
 import { WarningBanner } from "@/components/WarningBanner";
 import { SystemPageLayout } from "@/components/SystemPageLayout";
+import { AstrologyWheel } from "@/components/ephemeris/AstrologyWheel";
+import type { HouseCusp, EphemerisAngles } from "@/lib/ephemeris";
+import type { ZodiacType } from "@/calculators";
 
 const WaHaPage = () => {
   const { birthDetails, setBirthDetails } = useStore((state) => ({
     birthDetails: state.birthDetails,
     setBirthDetails: state.setBirthDetails,
   }));
+
+  const demoCusps: HouseCusp[] = [
+    { house: 1, longitude: 102.5, label: "Asc" },
+    { house: 2, longitude: 128.4 },
+    { house: 3, longitude: 156.2 },
+    { house: 4, longitude: 186.9 },
+    { house: 5, longitude: 213.7 },
+    { house: 6, longitude: 245.1 },
+    { house: 7, longitude: 281.0, label: "Dsc" },
+    { house: 8, longitude: 308.6 },
+    { house: 9, longitude: 333.3 },
+    { house: 10, longitude: 12.4, label: "MC" },
+    { house: 11, longitude: 39.2 },
+    { house: 12, longitude: 72.8 },
+  ];
+
+  const demoAngles: EphemerisAngles = {
+    ascendant: demoCusps[0].longitude,
+    descendant: demoCusps[6].longitude,
+    midheaven: demoCusps[9].longitude,
+    imumCoeli: (demoCusps[9].longitude + 180) % 360,
+  };
 
   return (
     <SystemPageLayout
@@ -20,38 +45,14 @@ const WaHaPage = () => {
         description="TODO integrate Swiss Ephemeris or JPL provider. Natal positions are not generated to respect the no-invention standard."
       />
       <section className="grid gap-6 md:grid-cols-[1.5fr_1fr]">
-        <div className="rounded-lg border border-muted/50 bg-white p-4 shadow-card dark:bg-slate-900">
-          <h2 className="text-base font-semibold">Wheel preview</h2>
-          <p className="text-xs text-muted">
-            Placeholder wheel shows rising sign, midheaven, and houses once a provider is wired.
-          </p>
-          <svg viewBox="-150 -150 300 300" className="mt-4 h-[280px] w-full">
-            <circle r={120} fill="none" stroke="var(--colour-muted)" strokeWidth={2} />
-            {Array.from({ length: 12 }).map((_, index) => {
-              const angle = (index / 12) * Math.PI * 2;
-              return (
-                <line
-                  key={index}
-                  x1={0}
-                  y1={0}
-                  x2={Math.cos(angle) * 120}
-                  y2={Math.sin(angle) * 120}
-                  stroke="var(--colour-muted)"
-                  strokeDasharray="4 2"
-                />
-              );
-            })}
-            <text
-              x={0}
-              y={0}
-              textAnchor="middle"
-              dominantBaseline="middle"
-              className="text-sm font-semibold fill-foreground"
-            >
-              {birthDetails.zodiac} · {birthDetails.houseSystem}
-            </text>
-          </svg>
-        </div>
+        <AstrologyWheel
+          cusps={demoCusps}
+          angles={demoAngles}
+          metadata={{
+            zodiac: birthDetails.zodiac.toLowerCase() as ZodiacType,
+            houseSystem: birthDetails.houseSystem,
+          }}
+        />
         <form className="rounded-lg border border-muted/50 bg-white p-4 text-sm shadow-card dark:bg-slate-900">
           <fieldset className="mb-4">
             <legend className="text-sm font-semibold">Zodiac</legend>

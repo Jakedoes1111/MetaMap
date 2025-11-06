@@ -1,4 +1,5 @@
 import type { DateTime } from "luxon";
+import type { EphemerisResponse } from "@/lib/ephemeris";
 
 export type ZodiacType = "tropical" | "sidereal";
 
@@ -20,9 +21,9 @@ export interface EphemerisOptions {
  * TODO: integrate concrete ephemeris providers.
  */
 export interface EphemerisProvider {
-  getPositions: (
+  getEphemeris: (
     birth: DateTime,
     coordinates: { latitude: number; longitude: number },
     options: EphemerisOptions,
-  ) => Promise<PlanetPosition[]>;
+  ) => Promise<EphemerisResponse>;
 }

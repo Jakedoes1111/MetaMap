@@ -26,5 +26,9 @@ describe("POST /api/providers/ephemeris", () => {
     expect(Array.isArray(json.positions)).toBe(true);
     expect(json.positions.length).toBeGreaterThan(0);
     expect(json.positions[0]).toHaveProperty("longitude");
+    expect(json).toHaveProperty("cusps");
+    expect(Array.isArray(json.cusps)).toBe(true);
+    expect(json.cusps[0]).toHaveProperty("house");
+    expect(json).toHaveProperty("angles.ascendant");
   });
 });
