@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  experimental: {
+    serverComponentsExternalPackages: ["swisseph"],
+  },
   webpack: (config, { isServer }) => {
     if (isServer) {
       const existing = config.externals ?? [];
