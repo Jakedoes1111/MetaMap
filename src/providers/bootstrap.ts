@@ -3,6 +3,7 @@ import { DemoEphemerisProvider } from "@/providers/ephemeris/DemoEphemerisProvid
 import { DemoChineseCalendarProvider } from "@/providers/chineseCalendar/DemoChineseCalendarProvider";
 import { DemoZWDSProvider } from "@/providers/zwds/DemoZWDSProvider";
 import { DemoQMDJProvider } from "@/providers/qmdj/DemoQMDJProvider";
+import { registerServerProviders } from "@/server/providers";
 
 let bootstrapped = false;
 
@@ -16,11 +17,15 @@ export const ensureProvidersBootstrapped = () => {
     return;
   }
 
+  const { ephemerisRegistered } = registerServerProviders();
+
   if (shouldEnableDemoProviders()) {
-    registerProvider({
-      key: "ephemeris",
-      provider: new DemoEphemerisProvider(),
-    });
+    if (!ephemerisRegistered) {
+      registerProvider({
+        key: "ephemeris",
+        provider: new DemoEphemerisProvider(),
+      });
+    }
     registerProvider({
       key: "chineseCalendar",
       provider: new DemoChineseCalendarProvider(),

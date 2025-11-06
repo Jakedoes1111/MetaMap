@@ -1,12 +1,5 @@
 import type { DateTime } from "luxon";
-
-export type ZodiacType = "tropical" | "sidereal";
-
-export interface PlanetPosition {
-  name: string;
-  longitude: number; // degrees 0-360
-  house?: number;
-}
+import type { EphemerisResponse, ZodiacType } from "@/lib/ephemeris";
 
 export interface EphemerisOptions {
   zodiac: ZodiacType;
@@ -17,12 +10,11 @@ export interface EphemerisOptions {
 /**
  * Defines the contract for ephemeris integrations such as Swiss Ephemeris or JPL.
  * Implementations may rely on paid data sources and should annotate privacy requirements.
- * TODO: integrate concrete ephemeris providers.
  */
 export interface EphemerisProvider {
   getPositions: (
     birth: DateTime,
     coordinates: { latitude: number; longitude: number },
     options: EphemerisOptions,
-  ) => Promise<PlanetPosition[]>;
+  ) => Promise<EphemerisResponse>;
 }
