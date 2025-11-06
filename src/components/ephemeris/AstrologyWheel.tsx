@@ -39,7 +39,13 @@ export interface AstrologyWheelProps {
 export const AstrologyWheel: FC<AstrologyWheelProps> = ({ cusps, angles, metadata, className }) => {
   if (cusps.length === 0) {
     return (
-      <div className={clsx("flex h-full items-center justify-center rounded-lg border border-muted/50 bg-white p-4 shadow-card dark:bg-slate-900", className)}>
+      <div
+        className={clsx(
+          "flex flex-col items-center justify-center gap-2",
+          className,
+        )}
+      >
+        <h2 className="text-base font-semibold">Wheel preview</h2>
         <p className="text-sm text-muted">No cusp data available.</p>
       </div>
     );
@@ -53,15 +59,11 @@ export const AstrologyWheel: FC<AstrologyWheelProps> = ({ cusps, angles, metadat
       : "Zodiac";
 
   return (
-    <div
-      className={clsx(
-        "rounded-lg border border-muted/50 bg-white p-4 shadow-card dark:bg-slate-900",
-        className,
-      )}
-    >
+    <div className={clsx("flex flex-col", className)}>
       <h2 className="text-base font-semibold">Wheel preview</h2>
       <p className="text-xs text-muted">
-        Cusps and angles sourced from the registered ephemeris provider.
+        Cusps and angles sourced from the registered ephemeris provider. Placeholder wheel shows rising sign, midheaven, and hou
+        ses once a provider is wired.
       </p>
       <svg viewBox="-150 -150 300 300" className="mt-4 h-[280px] w-full" role="img" aria-label="Astrology wheel">
         <circle r={radius} fill="none" stroke="var(--colour-muted)" strokeWidth={2} />

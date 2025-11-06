@@ -45,14 +45,16 @@ const WaHaPage = () => {
         description="TODO integrate Swiss Ephemeris or JPL provider. Natal positions are not generated to respect the no-invention standard."
       />
       <section className="grid gap-6 md:grid-cols-[1.5fr_1fr]">
-        <AstrologyWheel
-          cusps={demoCusps}
-          angles={demoAngles}
-          metadata={{
-            zodiac: birthDetails.zodiac.toLowerCase() as ZodiacType,
-            houseSystem: birthDetails.houseSystem,
-          }}
-        />
+        <div className="rounded-lg border border-muted/50 bg-white p-4 shadow-card dark:bg-slate-900">
+          <AstrologyWheel
+            cusps={demoCusps}
+            angles={demoAngles}
+            metadata={{
+              zodiac: birthDetails.zodiac.toLowerCase() as ZodiacType,
+              houseSystem: birthDetails.houseSystem,
+            }}
+          />
+        </div>
         <form className="rounded-lg border border-muted/50 bg-white p-4 text-sm shadow-card dark:bg-slate-900">
           <fieldset className="mb-4">
             <legend className="text-sm font-semibold">Zodiac</legend>
