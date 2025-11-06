@@ -22,6 +22,6 @@ describe("POST /api/providers/chineseCalendar", () => {
     const json = await response.json();
     expect(Array.isArray(json.pillars)).toBe(true);
     expect(json.pillars).toHaveLength(4);
-    expect(json.luckPillars).toHaveLength(4);
+    expect(json.luckPillars).toHaveLength(8);
   });
 });

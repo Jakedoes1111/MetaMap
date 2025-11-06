@@ -24,12 +24,16 @@ const QmdjPage = () => {
     providerLoading,
     providerErrors,
     clearProviderError,
+    appendRow,
+    pruneRows,
   } = useStore((state) => ({
     birthDetails: state.birthDetails,
     invokeProvider: state.invokeProvider,
     providerLoading: state.providerLoading,
     providerErrors: state.providerErrors,
     clearProviderError: state.clearProviderError,
+    appendRow: state.appendRow,
+    pruneRows: state.pruneRows,
   }));
 
   const [school, setSchool] = useState<(typeof schools)[number]>("Zhi Run");
@@ -52,6 +56,32 @@ const QmdjPage = () => {
     });
     if (response.status === 200 && response.data) {
       setBoard(response.data.board.chart);
+      const birthIso = `${birthDetails.birthDate}T${birthDetails.birthTime}`;
+      pruneRows((row) => row.system === "QMDJ");
+      response.data.board.chart.forEach((cell) => {
+        appendRow({
+          person_id: "default-person",
+          birth_datetime_local: birthIso,
+          birth_timezone: birthDetails.timezone,
+          system: "QMDJ",
+          subsystem: `${school} · ${arrangement}`,
+          source_tool: "qmdj",
+          source_url_or_ref: "",
+          data_point: `${cell.palace} palace`,
+          verbatim_text: `${cell.star} | ${cell.door} | ${cell.deity}`,
+          category: "Guidance",
+          subcategory: "Palace",
+          direction_cardinal: "",
+          direction_degrees: null,
+          timing_window_start: null,
+          timing_window_end: null,
+          polarity: "+",
+          strength: 0,
+          confidence: 0.7,
+          weight_system: 1,
+          notes: `arrangement=${arrangement}`,
+        });
+      });
     }
   };
 
@@ -61,11 +91,11 @@ const QmdjPage = () => {
       description="3×3 Lo Shu board with selectable school and arrangement populated by the configured provider."
     >
       <WarningBanner
-        title={board !== emptyBoard ? "Demo output" : "Provider required"}
+        title={board !== emptyBoard ? "Board computed" : "Awaiting provider"}
         description={
           board !== emptyBoard
-            ? "Demo board provided for development environments. Replace with licensed provider for production use."
-            : "The QMDJ board displays placeholders until a provider generates stars, doors, and deities."
+            ? "Stars, doors, and deities were generated using the configured Qi Men Dun Jia provider."
+            : "Run the generator to populate the Lo Shu palaces for the selected school and arrangement."
         }
       />
       <section className="grid gap-6 md:grid-cols-[1.2fr_1fr]">

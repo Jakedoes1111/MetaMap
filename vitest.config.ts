@@ -10,6 +10,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": resolve(__dirname, "./src"),
+      swisseph: resolve(__dirname, "./src/server/providers/ephemeris/swissephStub"),
     },
   },
   test: {

@@ -56,6 +56,7 @@ export interface MetaMapStore {
   addRows: (rows: DataRow[]) => void;
   replaceRows: (rows: DataRow[]) => void;
   appendRow: (row: DataRow) => void;
+  pruneRows: (predicate: (row: DatasetRow) => boolean) => void;
   clearDataset: () => void;
   setFilters: (filters: Partial<FilterState>) => void;
   resetFilters: () => void;
@@ -186,6 +187,10 @@ export const useStore = create<MetaMapStore>()(
           const idRow = { ...row, id: row.id ?? createId() };
           const combined = normaliseRows([...get().dataset, idRow]);
           set({ dataset: reweight(combined, get().weights) });
+        },
+        pruneRows: (predicate) => {
+          const filtered = get().dataset.filter((row) => !predicate(row));
+          set({ dataset: reweight(filtered, get().weights) });
         },
         clearDataset: () =>
           set({
