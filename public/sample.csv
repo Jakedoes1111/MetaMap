@@ -1,6 +1,10 @@
 person_id,birth_datetime_local,birth_timezone,system,subsystem,source_tool,source_url_or_ref,data_point,verbatim_text,category,subcategory,direction_cardinal,direction_degrees,timing_window_start,timing_window_end,polarity,strength,confidence,weight_system,notes
-default-person,1992-09-01T06:03:00,Australia/Sydney,WA,"Tropical · Placidus","Swiss Ephemeris",https://example.com/swiss-ephemeris,"Sun 08° Virgo","Sun at 08° Virgo in 1st house",Personality,"Core Self",,,,,+,2,0.9,1.0,"privacy:paid; source:Swiss Ephemeris"
-default-person,1992-09-01T06:03:00,Australia/Sydney,FS,"Period 8 Flying Stars","Feng Shui Toolkit",,Facing North prosperity sector,UNKNOWN,Property,"Wealth Sector",N,0,,,+,1,0.7,1.0,"period:8; facing:0"
-default-person,1992-09-01T06:03:00,Australia/Sydney,BaZi,"Standard HKO","Lunisolar Calculator",https://example.com/hko,"BaZi Day Pillar Ji-Si (己巳)","Ji-Si (己巳) day stem/branch",Timing,"Day Master",,,,,+,1,0.8,1.0,"variant:solar-lunar"
-default-person,1992-09-01T06:03:00,Australia/Sydney,Numerology_Pythagorean,,"MetaMap numerology",,Life Path 13/4,Life Path 13/4,Personality,"Life Path",,,,,+,1,0.6,1.0,"auto-calculated:numerology"
-default-person,1992-09-01T06:03:00,Australia/Sydney,Tarot,"Celtic Cross","MetaMap RNG",,The Sun,UNKNOWN,Guidance,Outcome,,,2024-03-01T10:15:00+11:00,2024-03-01T10:15:00+11:00,+,0,0.5,1.0,"spread:celtic; position:Outcome"
+default-person,1992-09-01T06:03:00,Australia/Sydney,WA,Sidereal · Lahiri,Astronomy Engine Ephemeris,,Sun 08° Virgo,Sun at 08° Virgo in 1st house,Personality,Core Self,,,,,+,2,0.9,1.0,source:astronomy-engine
+default-person,1992-09-01T06:03:00,Australia/Sydney,JA,Lahiri,Astronomy Engine Ephemeris,,Nakṣatra Chitrā,Moon longitude 186.49° (sidereal),Timing,Nakṣatra,,,,,+,0,0.8,1.0,ayanamsa:lahiri
+default-person,1992-09-01T06:03:00,Australia/Sydney,FS,Period 8,Traditional Flying Star,,North palace prosperity,Star 9 (base 1 / period 8),Direction,Flying Star,N,0,,,+,1,0.7,1.0,period:8; facing:0
+default-person,1992-09-01T06:03:00,Australia/Sydney,BaZi,Standard,SolarLunar Chinese Calendar,,Day pillar Ji-Si (己巳),Ji-Si (己巳) stem/branch,Timing,Day Master,,,,,+,1,0.85,1.0,gender:unspecified
+default-person,1992-09-01T06:03:00,Australia/Sydney,QMDJ,Zhi Run · yang,Lo Shu QMDJ,,Center palace,Wu | Open | Chief,Guidance,Palace,,,,,+,0,0.7,1.0,arrangement:yang
+default-person,1992-09-01T06:03:00,Australia/Sydney,HD,BodyGraph,Human Design Gate Mapper,,Type,Manifesting Generator,Personality,Type,,,,,+,0,0.7,0.6,authority:Sacral
+default-person,1992-09-01T06:03:00,Australia/Sydney,GK,Life's Work,Gene Keys Profile,,Gene Key 29,Line 2,Guidance,Sphere,,,,,+,0,0.6,0.5,sequence:Activation
+default-person,1992-09-01T06:03:00,Australia/Sydney,Numerology_Pythagorean,,MetaMap numerology,,Life Path 13/4,Life Path 13/4,Personality,Life Path,,,,,+,1,0.6,1.0,auto-calculated:numerology
+default-person,1992-09-01T06:03:00,Australia/Sydney,Tarot,Celtic Cross,MetaMap RNG,,The Sun,UNKNOWN,Guidance,Outcome,,,2024-03-01T10:15:00+11:00,2024-03-01T10:15:00+11:00,+,0,0.5,1.0,spread:celtic; position:Outcome

@@ -28,12 +28,16 @@ const BaZiPage = () => {
     providerLoading,
     providerErrors,
     clearProviderError,
+    appendRow,
+    pruneRows,
   } = useStore((state) => ({
     birthDetails: state.birthDetails,
     invokeProvider: state.invokeProvider,
     providerLoading: state.providerLoading,
     providerErrors: state.providerErrors,
     clearProviderError: state.clearProviderError,
+    appendRow: state.appendRow,
+    pruneRows: state.pruneRows,
   }));
 
   const [pillars, setPillars] = useState<BaZiPillar[] | null>(null);
@@ -59,6 +63,56 @@ const BaZiPage = () => {
     if (response.status === 200 && response.data) {
       setPillars(response.data.pillars);
       setLuckPillars(response.data.luckPillars);
+      const birthIso = `${birthDetails.birthDate}T${birthDetails.birthTime}`;
+      pruneRows((row) => row.system === "BaZi");
+      response.data.pillars.forEach((pillar) => {
+        appendRow({
+          person_id: "default-person",
+          birth_datetime_local: birthIso,
+          birth_timezone: birthDetails.timezone,
+          system: "BaZi",
+          subsystem: requestPayload.variant,
+          source_tool: "chineseCalendar",
+          source_url_or_ref: "",
+          data_point: `${pillarLabel(pillar.pillar)} pillar`,
+          verbatim_text: `${pillar.heavenlyStem} · ${pillar.earthlyBranch} (Hidden: ${pillar.hiddenStems.join(", ")})`,
+          category: "Timing",
+          subcategory: "Pillar",
+          direction_cardinal: "",
+          direction_degrees: null,
+          timing_window_start: null,
+          timing_window_end: null,
+          polarity: "+",
+          strength: 0,
+          confidence: 0.85,
+          weight_system: 1,
+          notes: `pillar=${pillar.pillar}`,
+        });
+      });
+      response.data.luckPillars.forEach((luck) => {
+        appendRow({
+          person_id: "default-person",
+          birth_datetime_local: birthIso,
+          birth_timezone: birthDetails.timezone,
+          system: "BaZi",
+          subsystem: `${requestPayload.variant} luck`,
+          source_tool: "chineseCalendar",
+          source_url_or_ref: "",
+          data_point: `Luck pillar ${luck.index + 1}`,
+          verbatim_text: `${luck.pillar.heavenlyStem} · ${luck.pillar.earthlyBranch} (start age ${luck.startingAge})`,
+          category: "Timing",
+          subcategory: "Luck",
+          direction_cardinal: "",
+          direction_degrees: null,
+          timing_window_start: null,
+          timing_window_end: null,
+          polarity: "+",
+          strength: 0,
+          confidence: 0.8,
+          weight_system: 1,
+          notes: `duration=${luck.durationYears}y`,
+        });
+      });
     }
   };
 
@@ -68,11 +122,11 @@ const BaZiPage = () => {
       description="Compute Heavenly Stems and Earthly Branches using the configured Chinese calendar provider."
     >
       <WarningBanner
-        title={pillars ? "Demo output" : "Provider required"}
+        title={pillars ? "BaZi pillars computed" : "Awaiting provider"}
         description={
           pillars
-            ? "Demo data provided for development environments. Replace with licensed provider for production use."
-            : "Connect a ChineseCalendarProvider to derive sexagenary stems, branches, and luck cycles."
+            ? "Sexagenary stems and branches are derived from the configured Chinese calendar provider."
+            : "Provide accurate birth details then compute to populate the pillars and decadal cycles."
         }
       />
       <section className="grid gap-6 md:grid-cols-[1.2fr_1fr]">

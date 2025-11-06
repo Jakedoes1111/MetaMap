@@ -8,6 +8,7 @@ MetaMap is a TypeScript + React (Next.js 14 App Router) web application for expl
 - ✅ **Visualisations** (timeline, compass, network, heatmap) powered by D3 and CSS variable palettes.
 - ✅ **Adjustable weights** (default HD 0.6, GK 0.5, others 1.0) stored in localStorage.
 - ✅ **RNG tools** for I Ching, Tarot, and Geomancy using `crypto.getRandomValues`.
+- ✅ **Live calculator demos** for ephemeris, Chinese calendar, Zi Wei Dou Shu, Qi Men Dun Jia, Feng Shui, Human Design, and Gene Keys.
 - ✅ **Plug-in ready calculators** with TypeScript interfaces under `src/calculators`.
 - ✅ **Accessibility & responsiveness** (WCAG AA focus styles, prefers-reduced-motion support).
 
@@ -40,7 +41,7 @@ Docker users can run `docker compose up --build` for a Node 20 Alpine environmen
 
 ### Provider registry
 
-The app ships with demo providers for Ephemeris, Chinese calendar, Zi Wei Dou Shu, and Qi Men Dun Jia when `NEXT_PUBLIC_ENABLE_DEMO_PROVIDERS=true` (enabled by default in non-production). Register licensed providers by calling `registerProvider` in `src/providers/bootstrap.ts` or supplying your own bootstrap module. Production builds should disable the demo flag.
+The app ships with demo providers for Ephemeris, Chinese calendar, Zi Wei Dou Shu, Qi Men Dun Jia, Feng Shui, Human Design, and Gene Keys when `NEXT_PUBLIC_ENABLE_DEMO_PROVIDERS=true` (enabled by default in non-production). Register licensed providers by calling `registerProvider` in `src/providers/bootstrap.ts` or supplying your own bootstrap module. Production builds should disable the demo flag.
 
 ### Testing in CI
 
@@ -84,7 +85,7 @@ Utility helpers (`src/lib`) cover intervals, direction mapping, CSV serializatio
 2. Use the **Import data** panel on the overview (`/`) to append or replace rows. Zod validates every line and surfaces row-level errors.
 3. **Export data** downloads the currently filtered dataset to CSV/JSON, maintaining schema ordering and ISO timestamps.
 
-Sample starter file lives at `public/sample.csv` with representative rows spanning astrology, Feng Shui, BaZi, numerology, and Tarot (including a `privacy:paid` note example).
+Sample starter file lives at `public/sample.csv` with representative rows spanning natal astrology, Jyotiṣa, Feng Shui, BaZi, Qi Men Dun Jia, Human Design, Gene Keys, numerology, and Tarot (including a `privacy:paid` note example).
 
 ---
 

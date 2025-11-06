@@ -2,7 +2,7 @@
 
 import { insertDatasetRows } from "@/server/datasets";
 import { createId } from "@/lib/id";
-import type { PlanetPosition } from "@/calculators";
+import type { EphemerisBody } from "@/lib/ephemeris";
 import type { ProviderKey } from "@/providers";
 import type { DataRow, System } from "@/schema";
 
@@ -11,7 +11,7 @@ const normaliseDegrees = (value: number): number => {
   return wrapped < 0 ? wrapped + 360 : wrapped;
 };
 
-const buildVerbatimText = (position: PlanetPosition): string => {
+const buildVerbatimText = (position: EphemerisBody): string => {
   const longitude = position.longitude.toFixed(2);
   const houseLabel = position.house != null ? ` (house ${position.house})` : "";
   return `${position.name} @ ${longitude}\u00B0${houseLabel}`;
@@ -24,7 +24,7 @@ const buildBaseRow = (
   system: System,
   subsystem: string,
   sourceTool: ProviderKey,
-  position: PlanetPosition,
+  position: EphemerisBody,
 ): DataRow => ({
   id: createId(),
   person_id: personId,
@@ -56,7 +56,7 @@ export interface PersistEphemerisPayload {
   birth: { date: string; time: string; timezone: string };
   options: { zodiac: "Tropical" | "Sidereal"; houseSystem: string; ayanamsa: string };
   coordinates: { latitude: number | null; longitude: number | null };
-  positions: PlanetPosition[];
+  positions: EphemerisBody[];
   provider: ProviderKey;
 }
 
