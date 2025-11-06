@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --colour-background: 220 27% 99%;
+  --colour-foreground: 220 20% 15%;
+  --colour-muted: 220 16% 85%;
+  --colour-accent: 210 85% 45%;
+  --colour-positive: 152 52% 47%;
+  --colour-neutral: 37 92% 57%;
+  --colour-negative: 8 71% 54%;
+  --colour-conflict: 280 60% 50%;
+  --colour-banner: 48 100% 92%;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --colour-background: 220 18% 8%;
+    --colour-foreground: 210 20% 95%;
+    --colour-muted: 215 16% 30%;
+    --colour-accent: 210 90% 68%;
+    --colour-positive: 152 58% 55%;
+    --colour-neutral: 37 92% 57%;
+    --colour-negative: 8 71% 62%;
+    --colour-conflict: 280 60% 65%;
+    --colour-banner: 48 38% 18%;
+  }
+}
+
+body {
+  @apply bg-background text-foreground font-sans antialiased;
+}
+
+a {
+  @apply text-accent underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+}
+
+button,
+input,
+select,
+textarea {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
