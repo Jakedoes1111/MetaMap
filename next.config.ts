@@ -1,17 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   webpack: (config, { isServer }) => {
     if (isServer) {
-      config.externals = config.externals ?? [];
-      const externals = Array.isArray(config.externals)
-        ? config.externals
-        : [config.externals];
+      const existing = config.externals ?? [];
+      const externals = Array.isArray(existing) ? [...existing] : [existing];
+
       if (!externals.includes("swisseph")) {
         externals.push("swisseph");
       }
+
       config.externals = externals;
     }
+
     return config;
   },
 };
