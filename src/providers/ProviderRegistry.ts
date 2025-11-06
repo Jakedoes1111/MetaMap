@@ -44,7 +44,7 @@ const registry: { [K in ProviderKey]: RegistryEntry<K> } = {
     name: "EphemerisProvider",
     description: "Computes planetary positions, houses, and sidereal metrics.",
     errorHint:
-      "Install a Swiss Ephemeris or JPL adapter and register it via registerProvider('ephemeris').",
+      "Set SWISS_EPHEMERIS_* env vars to force Swiss mode or allow the Astronomy Engine fallback to register automatically.",
   },
   chineseCalendar: {
     key: "chineseCalendar",
@@ -52,7 +52,7 @@ const registry: { [K in ProviderKey]: RegistryEntry<K> } = {
     name: "ChineseCalendarProvider",
     description: "Derives sexagenary pillars and luck cycles.",
     errorHint:
-      "Attach a licensed Chinese calendar implementation and register it with registerProvider('chineseCalendar').",
+      "Bootstrap registers the Solarlunar provider; override via registerProvider('chineseCalendar') if you license another engine.",
   },
   zwds: {
     key: "zwds",
@@ -60,7 +60,7 @@ const registry: { [K in ProviderKey]: RegistryEntry<K> } = {
     name: "ZWDSProvider",
     description: "Generates Zi Wei Dou Shu palace readings.",
     errorHint:
-      "Register a Zi Wei Dou Shu calculator implementation via registerProvider('zwds').",
+      "Classic Zi Wei Dou Shu provider registers by default. Swap implementations with registerProvider('zwds').",
   },
   qmdj: {
     key: "qmdj",
@@ -68,7 +68,7 @@ const registry: { [K in ProviderKey]: RegistryEntry<K> } = {
     name: "QMDJProvider",
     description: "Builds Qi Men Dun Jia boards for selected schools/arrangements.",
     errorHint:
-      "Register a Qi Men Dun Jia engine via registerProvider('qmdj') before requesting data.",
+      "Lo Shu Qi Men provider loads automatically; provide an alternative via registerProvider('qmdj') if needed.",
   },
   fs: {
     key: "fs",
@@ -76,7 +76,7 @@ const registry: { [K in ProviderKey]: RegistryEntry<K> } = {
     name: "FSProvider",
     description: "Calculates Flying Stars and Eight Mansions outputs.",
     errorHint:
-      "Register a Feng Shui provider using registerProvider('fs') to enable calculations.",
+      "Traditional Flying Star provider is bundled; replace with registerProvider('fs') for other schools.",
   },
   hd: {
     key: "hd",
@@ -84,7 +84,7 @@ const registry: { [K in ProviderKey]: RegistryEntry<K> } = {
     name: "HDProvider",
     description: "Computes Human Design BodyGraph centres, type, and authority.",
     errorHint:
-      "Register a Human Design provider using registerProvider('hd') with your API credentials.",
+      "Human Design gate provider initialises automatically. Use registerProvider('hd') to point at a commercial API.",
   },
   gk: {
     key: "gk",
@@ -92,7 +92,7 @@ const registry: { [K in ProviderKey]: RegistryEntry<K> } = {
     name: "GKProvider",
     description: "Generates Gene Keys hologenetic profiles.",
     errorHint:
-      "Register a Gene Keys provider implementation using registerProvider('gk') prior to use.",
+      "Gene Keys profile provider is bundled; override via registerProvider('gk') for licensed content.",
   },
 };
 

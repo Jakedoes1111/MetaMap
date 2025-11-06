@@ -4,12 +4,8 @@ import { useCallback, useMemo, useState } from "react";
 import { useStore } from "@/store/useStore";
 import { WarningBanner } from "@/components/WarningBanner";
 import { SystemPageLayout } from "@/components/SystemPageLayout";
-import type { PlanetPosition } from "@/calculators";
+import type { EphemerisBody, EphemerisResponse } from "@/lib/ephemeris";
 import { persistEphemerisResults } from "./actions";
-
-type EphemerisResponse = {
-  positions?: PlanetPosition[];
-};
 
 const WaHaPage = () => {
   const { birthDetails, setBirthDetails, dataset, addRows, invokeProvider } = useStore((state) => ({
@@ -22,6 +18,7 @@ const WaHaPage = () => {
 
   const [isComputing, setIsComputing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [ephemeris, setEphemeris] = useState<EphemerisResponse | null>(null);
 
   const ephemerisRows = useMemo(
     () => dataset.filter((row) => row.system === "WA" || row.system === "HA"),
@@ -66,12 +63,14 @@ const WaHaPage = () => {
         return;
       }
 
-      const positions = (response.data ?? {}).positions ?? [];
+      const ephemerisResponse = (response.data as { ephemeris?: EphemerisResponse } | null)?.ephemeris;
 
-      if (positions.length === 0) {
-        setError("Ephemeris provider returned no positions to persist.");
+      if (!ephemerisResponse) {
+        setError("Ephemeris provider returned an empty payload.");
         return;
       }
+
+      setEphemeris(ephemerisResponse);
 
       const persisted = await persistEphemerisResults({
         personId: "default-person",
@@ -89,7 +88,7 @@ const WaHaPage = () => {
           latitude: birthDetails.latitude ?? null,
           longitude: birthDetails.longitude ?? null,
         },
-        positions,
+        positions: ephemerisResponse.bodies as EphemerisBody[],
         provider: "ephemeris",
       });
 
@@ -121,44 +120,49 @@ const WaHaPage = () => {
   return (
     <SystemPageLayout
       title="Western / Hellenistic Astrology"
-      description="Wheel placeholder with configurable zodiac and house system. Awaiting Swiss Ephemeris integration."
+      description="Compute tropical or sidereal longitudes using the configured ephemeris provider and persist the results into the dataset."
     >
       <WarningBanner
-        title="UNKNOWN"
-        description="TODO integrate Swiss Ephemeris or JPL provider. Natal positions are not generated to respect the no-invention standard."
+        title={ephemeris ? "Ephemeris ready" : "Provider required"}
+        description={
+          ephemeris
+            ? `Positions calculated with ${ephemeris.metadata.provider} (${ephemeris.metadata.options.zodiac}).`
+            : "Configure birth details then run the computation to generate natal positions and houses."
+        }
       />
       <section className="grid gap-6 md:grid-cols-[1.5fr_1fr]">
         <div className="rounded-lg border border-muted/50 bg-white p-4 shadow-card dark:bg-slate-900">
-          <h2 className="text-base font-semibold">Wheel preview</h2>
-          <p className="text-xs text-muted">
-            Placeholder wheel shows rising sign, midheaven, and houses once a provider is wired.
-          </p>
-          <svg viewBox="-150 -150 300 300" className="mt-4 h-[280px] w-full">
-            <circle r={120} fill="none" stroke="var(--colour-muted)" strokeWidth={2} />
-            {Array.from({ length: 12 }).map((_, index) => {
-              const angle = (index / 12) * Math.PI * 2;
-              return (
-                <line
-                  key={index}
-                  x1={0}
-                  y1={0}
-                  x2={Math.cos(angle) * 120}
-                  y2={Math.sin(angle) * 120}
-                  stroke="var(--colour-muted)"
-                  strokeDasharray="4 2"
-                />
-              );
-            })}
-            <text
-              x={0}
-              y={0}
-              textAnchor="middle"
-              dominantBaseline="middle"
-              className="text-sm font-semibold fill-foreground"
-            >
-              {birthDetails.zodiac} · {birthDetails.houseSystem}
-            </text>
-          </svg>
+          <h2 className="text-base font-semibold">Angles & houses</h2>
+          {ephemeris ? (
+            <div className="mt-3 grid gap-4 md:grid-cols-2">
+              <div>
+                <h3 className="text-sm font-semibold">Angles</h3>
+                <ul className="mt-2 space-y-1 text-sm">
+                  {ephemeris.angles.map((angle) => (
+                    <li key={angle.id} className="flex items-center justify-between rounded border border-muted/40 px-3 py-2">
+                      <span className="font-medium uppercase">{angle.id}</span>
+                      <span>{angle.longitude.toFixed(2)}°</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold">House cusps</h3>
+                <ul className="mt-2 space-y-1 text-sm">
+                  {ephemeris.houses.map((house) => (
+                    <li key={house.index} className="flex items-center justify-between rounded border border-muted/40 px-3 py-2">
+                      <span>House {house.index}</span>
+                      <span>{house.cusp.toFixed(2)}°</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <p className="mt-3 text-sm text-muted">
+              Run the computation to populate ascendant, midheaven, and house cusps.
+            </p>
+          )}
         </div>
         <form className="rounded-lg border border-muted/50 bg-white p-4 text-sm shadow-card dark:bg-slate-900">
           <fieldset className="mb-4">
@@ -260,6 +264,35 @@ const WaHaPage = () => {
           </div>
         )}
       </section>
+      {ephemeris && (
+        <section className="mt-6 rounded-lg border border-muted/50 bg-white p-4 text-sm shadow-card dark:bg-slate-900">
+          <h2 className="text-base font-semibold">Current planetary positions</h2>
+          <div className="mt-3 overflow-x-auto">
+            <table className="min-w-full text-sm">
+              <thead>
+                <tr className="text-left text-xs uppercase text-muted">
+                  <th className="pb-2">Body</th>
+                  <th className="pb-2">Longitude</th>
+                  <th className="pb-2">Latitude</th>
+                  <th className="pb-2">House</th>
+                  <th className="pb-2">Motion</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ephemeris.bodies.map((body) => (
+                  <tr key={body.id} className="border-t border-muted/30">
+                    <td className="py-2 font-medium">{body.name}</td>
+                    <td className="py-2">{body.longitude.toFixed(2)}°</td>
+                    <td className="py-2">{body.latitude.toFixed(2)}°</td>
+                    <td className="py-2">{body.house ?? "—"}</td>
+                    <td className="py-2 text-xs text-muted">{body.retrograde ? "Retrograde" : "Direct"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
     </SystemPageLayout>
   );
 };

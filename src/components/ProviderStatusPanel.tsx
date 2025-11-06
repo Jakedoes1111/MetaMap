@@ -23,7 +23,8 @@ export const ProviderStatusPanel = () => {
         <div>
           <h2 className="text-base font-semibold">Provider health</h2>
           <p className="text-xs text-muted">
-            Register calculator providers via the registry API to unlock live data outputs.
+            Core calculators bootstrap on demand. Refresh to verify Swiss Ephemeris, Chinese calendar, and metaphysics
+            providers are responding.
           </p>
         </div>
         <button

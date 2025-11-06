@@ -21,8 +21,7 @@ const items: CardItem[] = [
     title: "Western / Hellenistic Astrology (WA/HA)",
     route: "/systems/wa-ha",
     description:
-      "Natal wheel placeholder with selectable house system and zodiac. Swiss Ephemeris integration pending.",
-    warning: "TODO integrate Swiss Ephemeris; currently no natal inventions.",
+      "Live ephemeris with Swiss Ephemeris (or Astronomy Engine fallback), configurable ayanāṃśa, and dataset sync.",
   },
   {
     system: "JA",
@@ -36,44 +35,42 @@ const items: CardItem[] = [
     title: "BaZi Four Pillars",
     route: "/systems/bazi",
     description:
-      "Four Pillars and Luck Pillars grids. Chinese calendar provider required for live data.",
-    warning: "UNKNOWN until a Chinese calendar provider is configured (privacy:paid if licensed).",
+      "Four Pillars and Luck Pillars derived from the built-in Chinese calendar provider with gender-aware cycles.",
   },
   {
     system: "ZWDS",
     title: "Zi Wei Dou Shu",
     route: "/systems/zwds",
-    description: "12-palace layout placeholder awaiting chart provider.",
-    warning: "UNKNOWN pending ZWDS calculator integration.",
+    description:
+      "Twelve-palace chart populated by the Zi Wei Dou Shu provider with major/minor star groupings.",
   },
   {
     system: "QMDJ",
     title: "Qi Men Dun Jia",
     route: "/systems/qmdj",
     description:
-      "3×3 Lo Shu board with school selector and hour/day toggle. Displays TODO markers until provider added.",
+      "3×3 Lo Shu boards generated per school and arrangement with logged palace stars, doors, and deities.",
   },
   {
     system: "FS",
     title: "Feng Shui",
     route: "/systems/fs",
     description:
-      "Flying Star matrix and Eight Mansions Gua calculator. Records UNKNOWN when calculators absent.",
+      "Flying Star matrix, natal chart period analysis, and Eight Mansions outputs via the Traditional FS provider.",
   },
   {
     system: "HD",
     title: "Human Design",
     route: "/systems/hd",
     description:
-      "BodyGraph scaffold referencing system weight 0.6. Awaiting BodyGraph provider for live gates.",
-    warning: "TODO integrate HD provider; mark proprietary data as privacy:paid.",
+      "BodyGraph rendering with centre definition, type, and authority sourced from the Human Design gate provider.",
   },
   {
     system: "GK",
     title: "Gene Keys",
     route: "/systems/gk",
     description:
-      "Hologenetic profile placeholders referencing system weight 0.5. No gate interpretations without provider.",
+      "Hologenetic profile populated from computed Solar/Earth gates with sequences ready for annotation.",
   },
   {
     system: "IChing",
