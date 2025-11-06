@@ -67,7 +67,7 @@ export async function POST(request: Request, { params }: ProviderParams) {
     const latitude = payload.coordinates?.latitude ?? 0;
     const longitude = payload.coordinates?.longitude ?? 0;
     const provider = getProvider("ephemeris");
-    const positions = await provider.getPositions(
+    const ephemeris = await provider.getPositions(
       birth,
       { latitude, longitude },
       {
@@ -78,7 +78,7 @@ export async function POST(request: Request, { params }: ProviderParams) {
     );
 
     return NextResponse.json({
-      positions,
+      ephemeris,
     });
   }
 
