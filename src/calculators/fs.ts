@@ -13,7 +13,7 @@ export interface EightMansionsResult {
 
 /**
  * Feng Shui provider interface for Flying Stars and Eight Mansions computations.
- * TODO: wire a concrete provider, annotating `privacy:paid` in notes when relevant.
+ * TODO: wire a concrete provider, annotating the privacy field when relevant.
  */
 export interface FSProvider {
   computeFlyingStars: (input: {

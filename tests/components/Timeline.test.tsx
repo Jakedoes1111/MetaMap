@@ -24,6 +24,8 @@ const makeRow = (overrides: Partial<DatasetRow>): DatasetRow => ({
   strength: 1,
   confidence: 0.5,
   weight_system: 1,
+  privacy: "public",
+  provenance: "",
   notes: "",
   merged_from: [],
   conflict_set: null,
@@ -40,5 +42,17 @@ describe("Timeline", () => {
     expect(
       screen.queryByText(/No timing windows available/i),
     ).not.toBeInTheDocument();
+  });
+
+  it("shows paid rows alongside public entries", () => {
+    const rows = [
+      makeRow({ id: "public", data_point: "Public", privacy: "public" }),
+      makeRow({ id: "paid", data_point: "Paid", privacy: "paid" }),
+    ];
+
+    render(<Timeline rows={rows} timezone="UTC" />);
+
+    expect(screen.getByText("Public")).toBeInTheDocument();
+    expect(screen.getByText("Paid")).toBeInTheDocument();
   });
 });

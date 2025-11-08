@@ -96,15 +96,17 @@ const FsPage = () => {
         direction_degrees: cell.palace === "Centre" ? null : facing,
         timing_window_start: null,
         timing_window_end: null,
-        polarity: "+",
-        strength: 0,
-        confidence: 0.7,
-        weight_system: 1,
-        notes: `facing=${facing}`,
-      });
+      polarity: "+",
+      strength: 0,
+      confidence: 0.7,
+      weight_system: 1,
+      privacy: "public",
+      provenance: `provider:fs:period-${period}`,
+      notes: `facing=${facing}`,
     });
+  });
 
-    appendRow({
+  appendRow({
       person_id: "default-person",
       birth_datetime_local: birthIso,
       birth_timezone: birthDetails.timezone,
@@ -120,13 +122,15 @@ const FsPage = () => {
       direction_degrees: null,
       timing_window_start: null,
       timing_window_end: null,
-      polarity: "+",
-      strength: 0,
-      confidence: 0.6,
-      weight_system: 1,
-      notes: `favourable=${response.data.eightMansions.favourableDirections.join("|")}`,
-    });
-  };
+    polarity: "+",
+    strength: 0,
+    confidence: 0.6,
+    weight_system: 1,
+    privacy: "public",
+    provenance: "provider:fs:eight-mansions",
+    notes: `favourable=${response.data.eightMansions.favourableDirections.join("|")}`,
+  });
+};
 
   const displayStars = flyingStars ?? placeholderStars;
 
@@ -244,7 +248,7 @@ const FsPage = () => {
             <ul className="mt-2 list-disc space-y-1 pl-5">
               <li>Use <code>subsystem</code> to track Flying Star period (1-9).</li>
               <li>
-                For paid calculators, append <code>notes:&quot;privacy:paid&quot;</code> so users can filter.
+                For paid calculators, set the <code>privacy</code> field to <code>paid</code> so users can filter.
               </li>
               <li>Log conflict sets when facing/sitting outputs disagree across schools.</li>
             </ul>

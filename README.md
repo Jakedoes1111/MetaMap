@@ -64,7 +64,8 @@ Schema lives in `src/schema.ts` (Zod + inferred TypeScript types). CSV column or
 person_id,birth_datetime_local,birth_timezone,system,subsystem,
 source_tool,source_url_or_ref,data_point,verbatim_text,category,
 subcategory,direction_cardinal,direction_degrees,timing_window_start,
-timing_window_end,polarity,strength,confidence,weight_system,notes
+timing_window_end,polarity,strength,confidence,weight_system,privacy,
+provenance,notes
 ```
 
 Core enum sets: `System`, `Category`, `DirectionCardinal`, `Polarity`. Validation rules:
@@ -73,6 +74,7 @@ Core enum sets: `System`, `Category`, `DirectionCardinal`, `Polarity`. Validatio
 - `direction_degrees` integer 0–359; auto-derives cardinal if missing.
 - `strength` integer −2…+2, `confidence` between 0…1.
 - `weight_system > 0` (defaults: HD 0.6, GK 0.5, others 1.0).
+- `privacy` values: `public`, `internal`, `paid`. Use `provenance` to track provider+timestamp metadata.
 - Timezone must be an IANA tzdb identifier.
 
 Utility helpers (`src/lib`) cover intervals, direction mapping, CSV serialization, deduplication, and numerology math.
@@ -85,7 +87,7 @@ Utility helpers (`src/lib`) cover intervals, direction mapping, CSV serializatio
 2. Use the **Import data** panel on the overview (`/`) to append or replace rows. Zod validates every line and surfaces row-level errors.
 3. **Export data** downloads the currently filtered dataset to CSV/JSON, maintaining schema ordering and ISO timestamps.
 
-Sample starter file lives at `public/sample.csv` with representative rows spanning natal astrology, Jyotiṣa, Feng Shui, BaZi, Qi Men Dun Jia, Human Design, Gene Keys, numerology, and Tarot (including a `privacy:paid` note example).
+Sample starter file lives at `public/sample.csv` with representative rows spanning natal astrology, Jyotiṣa, Feng Shui, BaZi, Qi Men Dun Jia, Human Design, Gene Keys, numerology, and Tarot—including entries flagged with `privacy=paid` and `privacy=internal` for filter testing.
 
 ---
 
@@ -97,7 +99,7 @@ Interfaces live in `src/calculators/`:
 - `ChineseCalendarProvider` – BaZi pillars, luck cycles, sexagenary conversions.
 - `ZWDSProvider`, `QMDJProvider`, `FSProvider`, `HDProvider`, `GKProvider`.
 
-Inject your implementation into the relevant system route (under `app/systems/**`). When a provider is absent, UI components surface `UNKNOWN` banners. Mark paid or private sources with `notes:"privacy:paid"` so users can filter them out.
+Inject your implementation into the relevant system route (under `app/systems/**`). When a provider is absent, UI components surface `UNKNOWN` banners. Mark paid or private sources by setting the `privacy` field to `paid` or `internal` so collaborators can filter them out.
 
 Until a calculator is integrated, MetaMap never invents WA/HA/JA/BaZi/ZWDS/QMDJ/FS/HD/GK results—only deterministic math (e.g., numerology) is pre-filled.
 

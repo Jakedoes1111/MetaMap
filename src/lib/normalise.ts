@@ -30,6 +30,16 @@ const mergeListField = (a?: string, b?: string) => {
   return Array.from(values).join("; ");
 };
 
+const mergePrivacy = (a: DataRow["privacy"], b: DataRow["privacy"]): DataRow["privacy"] => {
+  if (a === "paid" || b === "paid") {
+    return "paid";
+  }
+  if (a === "internal" || b === "internal") {
+    return "internal";
+  }
+  return "public";
+};
+
 const mergeNotes = (a?: string, b?: string) =>
   [a, b]
     .map((value) => value?.trim())
@@ -96,9 +106,11 @@ export const dedupeRows = (rows: DataRow[]): NormalisedRow[] => {
           merged_from: Array.from(mergedFrom),
           source_tool: mergeListField(candidate.source_tool, directionApplied.source_tool),
           source_url_or_ref: mergeListField(
-          candidate.source_url_or_ref,
-          directionApplied.source_url_or_ref,
+            candidate.source_url_or_ref,
+            directionApplied.source_url_or_ref,
           ),
+          provenance: mergeListField(candidate.provenance, directionApplied.provenance),
+          privacy: mergePrivacy(candidate.privacy, directionApplied.privacy),
           notes: appendToken(
             mergeNotes(candidate.notes, directionApplied.notes),
             `merged:${Array.from(mergedFrom).join("+")}`,

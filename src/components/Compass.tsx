@@ -33,7 +33,7 @@ export const Compass = ({ rows }: CompassProps) => {
     filtered.forEach((row) => {
       const degrees = row.direction_degrees ?? null;
       const cardinal =
-        row.direction_cardinal && row.direction_cardinal !== ""
+        row.direction_cardinal !== ""
           ? (row.direction_cardinal as (typeof sectors)[number])
           : degrees != null
             ? degreesToCardinal(degrees)
@@ -66,7 +66,10 @@ export const Compass = ({ rows }: CompassProps) => {
         .endAngle(endAngle);
       return {
         ...item,
-        path: arcGenerator() ?? "",
+        path:
+          arcGenerator(
+            null as unknown as Parameters<typeof arcGenerator>[0],
+          ) ?? "",
         midAngle: startAngle + sectorSize / 2,
       };
     });

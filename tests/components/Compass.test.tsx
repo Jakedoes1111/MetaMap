@@ -25,6 +25,8 @@ const baseRow: DatasetRow = {
   strength: 2,
   confidence: 0.5,
   weight_system: 1,
+  privacy: "public",
+  provenance: "",
   notes: "",
   merged_from: [],
   conflict_set: null,
@@ -45,5 +47,17 @@ describe("Compass", () => {
     expect(
       screen.getByText(/Facing North prosperity sector/i),
     ).toBeInTheDocument();
+  });
+
+  it("renders multiple sectors with privacy metadata intact", () => {
+    const rows: DatasetRow[] = [
+      baseRow,
+      { ...baseRow, id: "east", direction_cardinal: "E", direction_degrees: 90, privacy: "paid" },
+    ];
+
+    render(<Compass rows={rows} />);
+
+    expect(screen.getByText(/N • 1 rows • Weighted 1.00/i)).toBeInTheDocument();
+    expect(screen.getByText(/E • 1 rows • Weighted 1.00/i)).toBeInTheDocument();
   });
 });

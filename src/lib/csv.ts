@@ -1,6 +1,13 @@
 import Papa from "papaparse";
 import { DateTime } from "luxon";
-import { UNKNOWN_TOKEN, CSV_HEADERS, DataRowSchema, WeightDefaults, type DataRow, type System } from "@/schema";
+import {
+  UNKNOWN_TOKEN,
+  CSV_HEADERS,
+  DataRowSchema,
+  WeightDefaults,
+  type DataRow,
+  type System,
+} from "@/schema";
 import { createId } from "@/lib/id";
 
 type ParseError = { row: number; message: string };
@@ -24,6 +31,20 @@ const ensureWeight = (system: System, weight?: unknown) => {
 
 const ensureVerbatim = (text?: unknown) =>
   typeof text === "string" && text.trim().length > 0 ? text : UNKNOWN_TOKEN;
+
+const normalisePrivacy = (value?: unknown): DataRow["privacy"] => {
+  if (typeof value !== "string") {
+    return "public";
+  }
+  const normalised = value.trim().toLowerCase();
+  if (normalised === "internal" || normalised === "paid") {
+    return normalised;
+  }
+  return "public";
+};
+
+const ensureProvenance = (value?: unknown) =>
+  typeof value === "string" ? value.trim() : "";
 
 export const parseCsv = (content: string): { rows: DataRow[]; errors: ParseError[] } => {
   const results = Papa.parse<Record<string, string>>(content, {
@@ -57,6 +78,8 @@ export const parseCsv = (content: string): { rows: DataRow[]; errors: ParseError
       strength: Number(raw.strength),
       confidence: Number(raw.confidence),
       weight_system: ensureWeight(raw.system as System, raw.weight_system),
+      privacy: normalisePrivacy(raw.privacy),
+      provenance: ensureProvenance(raw.provenance),
       notes: raw.notes ?? "",
     };
 
@@ -116,6 +139,8 @@ export const parseJson = (content: string): { rows: DataRow[]; errors: ParseErro
         strength: Number(raw.strength),
         confidence: Number(raw.confidence),
         weight_system: ensureWeight(raw.system as System, raw.weight_system),
+        privacy: normalisePrivacy(raw.privacy),
+        provenance: ensureProvenance(raw.provenance),
         notes: (raw.notes as string) ?? "",
       };
       const validation = DataRowSchema.safeParse(candidate);
@@ -170,10 +195,12 @@ export const rowsToCsv = (rows: DataRow[]): string =>
       strength: row.strength,
       confidence: row.confidence,
       weight_system: row.weight_system,
+      privacy: row.privacy,
+      provenance: row.provenance ?? "",
       notes: row.notes ?? "",
     })),
     {
-      columns: CSV_HEADERS,
+      columns: [...CSV_HEADERS],
     },
   );
 

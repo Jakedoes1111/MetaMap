@@ -41,6 +41,8 @@ const NumerologyPage = () => {
       strength: 1,
       confidence: 0.6,
       weight_system: 1,
+      privacy: "public",
+      provenance: "internal:numerology",
       notes: `auto-calculated:${system}`,
     });
   };

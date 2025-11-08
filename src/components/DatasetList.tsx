@@ -70,6 +70,10 @@ export const DatasetList = ({ rows }: DatasetListProps) => {
                   <p className="mt-2 text-xs text-muted">
                     {row.verbatim_text === UNKNOWN_TOKEN ? "UNKNOWN" : row.verbatim_text}
                   </p>
+                  <p className="mt-1 text-xs text-muted">
+                    Privacy: {row.privacy}
+                    {row.provenance ? ` • Provenance: ${row.provenance}` : ""}
+                  </p>
                   {row.notes && <p className="mt-1 text-xs text-muted">Notes: {row.notes}</p>}
                 </article>
               );

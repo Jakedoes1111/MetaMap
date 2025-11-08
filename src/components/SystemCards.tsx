@@ -37,7 +37,7 @@ const items: CardItem[] = [
     route: "/systems/bazi",
     description:
       "Four Pillars and Luck Pillars grids. Chinese calendar provider required for live data.",
-    warning: "UNKNOWN until a Chinese calendar provider is configured (privacy:paid if licensed).",
+    warning: "UNKNOWN until a Chinese calendar provider is configured; mark privacy as paid for licensed data.",
   },
   {
     system: "ZWDS",
@@ -66,7 +66,7 @@ const items: CardItem[] = [
     route: "/systems/hd",
     description:
       "BodyGraph scaffold referencing system weight 0.6. Awaiting BodyGraph provider for live gates.",
-    warning: "TODO integrate HD provider; mark proprietary data as privacy:paid.",
+    warning: "TODO integrate HD provider; set privacy to paid when using licensed APIs.",
   },
   {
     system: "GK",

@@ -40,8 +40,8 @@ export const HowItWorksModal = () => {
           <p>
             MetaMap honours multiple self-modelling traditions without invention. Data rows use the
             normalised schema, and calculators that are not yet integrated display{" "}
-            <code>UNKNOWN</code>. Proprietary or paid outputs are flagged with{" "}
-            <code>privacy:paid</code> so you can hide them as needed.
+            <code>UNKNOWN</code>. Proprietary or paid outputs are flagged via the <code>privacy</code>
+            column (set to <code>paid</code>) so you can hide them as needed.
           </p>
           <p>
             VARIANT badges appear when configurable elements—such as the Jyotiṣa ayanāṃśa or Qi Men

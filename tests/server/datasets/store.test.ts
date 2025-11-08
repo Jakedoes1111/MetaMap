@@ -25,6 +25,8 @@ describe("InMemoryDatasetStore", () => {
     strength: 0,
     confidence: 0.85,
     weight_system: 1,
+    privacy: "public",
+    provenance: "",
     notes: "longitude=150.12;house=3",
     ...overrides,
   });
@@ -41,6 +43,7 @@ describe("InMemoryDatasetStore", () => {
     );
 
     expect(record.row.source_tool).toBe("ephemeris");
+    expect(record.row.provenance).toContain("ephemeris:2024-01-01T00:00:00.000Z");
     expect(record.row.notes).toContain("provenance:timestamp=2024-01-01T00:00:00.000Z");
     expect(record.row.notes).toContain("provider=ephemeris");
     expect(record.row.notes).toContain('"houseSystem":"Placidus"');
@@ -64,5 +67,7 @@ describe("InMemoryDatasetStore", () => {
     const provenanceCount = (record.row.notes.match(/provenance:/g) ?? []).length;
     expect(provenanceCount).toBe(1);
     expect(record.row.notes.startsWith("existing")).toBe(true);
+    expect(record.row.provenance).toContain("ephemeris:2024-01-02T00:00:00.000Z");
+    expect(record.row.provenance.split("|").length).toBe(1);
   });
 });

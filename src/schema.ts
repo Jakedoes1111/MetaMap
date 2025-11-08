@@ -53,10 +53,13 @@ export const DirectionCardinalValues = [
 
 export const PolarityValues = ["+", "0", "−"] as const;
 
+export const PrivacyLevelValues = ["public", "internal", "paid"] as const;
+
 export type System = (typeof SystemValues)[number];
 export type Category = (typeof CategoryValues)[number];
 export type DirectionCardinal = (typeof DirectionCardinalValues)[number];
 export type Polarity = (typeof PolarityValues)[number];
+export type PrivacyLevel = (typeof PrivacyLevelValues)[number];
 
 const TIMEZONE_SET = new Set(getTimeZones().map((tz) => tz.name));
 
@@ -107,6 +110,8 @@ export const DataRowSchema = z
     strength: z.number().int().min(-2).max(2),
     confidence: z.number().min(0).max(1),
     weight_system: z.number().positive(),
+    privacy: z.enum(PrivacyLevelValues).optional().default("public"),
+    provenance: z.string().optional().default(""),
     notes: z.string().optional().default(""),
   })
   .superRefine((value, ctx) => {
@@ -160,6 +165,8 @@ export const CSV_HEADERS = [
   "strength",
   "confidence",
   "weight_system",
+  "privacy",
+  "provenance",
   "notes",
 ] as const satisfies ReadonlyArray<keyof Omit<DataRow, "id">>;
 

@@ -9,7 +9,7 @@ export interface EphemerisOptions {
 
 /**
  * Defines the contract for ephemeris integrations such as Swiss Ephemeris or JPL.
- * Implementations may rely on paid data sources and should annotate privacy requirements.
+ * Implementations may rely on paid data sources and should update the dataset privacy flag accordingly.
  */
 export interface EphemerisProvider {
   getPositions: (

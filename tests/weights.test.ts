@@ -23,6 +23,8 @@ const makeRow = (overrides: Partial<DatasetRow>): DatasetRow => ({
   strength: 0,
   confidence: 1,
   weight_system: 1,
+  privacy: "public",
+  provenance: "",
   notes: "",
   merged_from: [],
   conflict_set: null,

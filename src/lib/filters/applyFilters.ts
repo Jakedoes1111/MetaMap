@@ -52,7 +52,7 @@ export const applyFilters = (rows: DatasetRow[], filters: FilterState): DatasetR
     if (filters.hideUnknown && row.verbatim_text === "UNKNOWN") {
       return false;
     }
-    if (filters.hidePrivacyPaid && row.notes.includes("privacy:paid")) {
+    if (filters.hidePrivacyPaid && row.privacy === "paid") {
       return false;
     }
     return true;

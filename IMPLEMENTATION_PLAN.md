@@ -29,7 +29,7 @@ This document captures the implementation roadmap for finishing the MetaMap Next
    - Remove already-generated `.next/` and `test-results/` directories from the repo history/worktree (delete locally; do not commit generated artefacts).
 
 4. **Enrich sample data**
-   - Populate `public/sample.csv` with 3–5 representative rows covering different systems, directions, timing windows, and `privacy:paid` note usage.
+   - Populate `public/sample.csv` with 3–5 representative rows covering different systems, directions, timing windows, and `privacy` column usage (public/internal/paid).
    - Update README import instructions to reference the richer sample.
 
 5. **Add basic smoke tests**
@@ -42,7 +42,7 @@ Estimated effort: ~1 day.
 ## 3. Core Goals for Completion
 
 - Integrate real calculator providers for each `UNKNOWN` system (ephemeris, Chinese calendar, Zi Wei Dou Shu, Qi Men Dun Jia, Feng Shui, Human Design, Gene Keys).
-- Persist calculator outputs into the dataset via a consistent interface (with provenance, subsystem tagging, `privacy:paid` annotations).
+- Persist calculator outputs into the dataset via a consistent interface (with provenance, subsystem tagging, and `privacy` annotations).
 - Provide UI feedback states (loading, error, variant indicators) once real data is produced.
 - Expand testing to cover calculators, normalisation edge cases, and E2E flows.
 - Prepare deployment artefacts (Docker image, CI pipeline) and documentation for operators/users.
@@ -112,7 +112,7 @@ Estimated effort: ~1 day.
 3. Align Life Gua calculation with provider results to avoid duplication.
 
 #### 2.6 Human Design (HD)
-1. Integrate BodyGraph provider (likely requires 3rd-party API: Jovian Archive, Genetic Matrix). Respect licensing; add `privacy:paid`.
+1. Integrate BodyGraph provider (likely requires 3rd-party API: Jovian Archive, Genetic Matrix). Respect licensing; set `privacy` to `paid`.
 2. Update UI to show defined centres, type, authority. Consider dynamic SVG.
 3. Since data may be sensitive/licensed, gate behind configuration flag.
 
@@ -191,7 +191,7 @@ For each provider:
 
 ## 5. Implementation Notes & Risks
 
-- **Licensing:** Several providers (Swiss Ephemeris, HD, GK) may require paid licenses. Honour `privacy:paid` flags and document limitations.
+- **Licensing:** Several providers (Swiss Ephemeris, HD, GK) may require paid licenses. Honour `privacy=paid` flags and document limitations.
 - **Timezones:** Ensure providers operate with consistent timezone conversions. Prefer using Luxon `DateTime` objects across server and client.
 - **Performance:** Heavy libraries (ephemeris) should stay server-side; client components should fetch via API to avoid bloating bundles.
 - **Security:** Sanitise inputs coming from dataset (notes may contain user text). When exporting, guard against CSV injection (prefix `'` if first char is `=`, `+`, etc.).

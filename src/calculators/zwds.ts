@@ -8,7 +8,7 @@ export interface ZWDSPalaceReading {
 
 /**
  * Zi Wei Dou Shu provider contract.
- * TODO: integrate licensed calculator and surface privacy requirements.
+ * TODO: integrate licensed calculator and surface privacy requirements via the privacy field.
  */
 export interface ZWDSProvider {
   computeChart: (input: {

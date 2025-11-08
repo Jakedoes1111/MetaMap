@@ -10,8 +10,8 @@ export const FilterBar = () => {
   const resetFilters = useStore((state) => state.resetFilters);
 
   const toggleItem = useCallback(
-    <T extends string>(key: "systems" | "categories", value: T) => {
-      const current = new Set(filters[key]);
+    (key: "systems" | "categories", value: string) => {
+      const current = new Set<string>(filters[key] as string[]);
       if (current.has(value)) {
         current.delete(value);
       } else {
@@ -220,7 +220,7 @@ export const FilterBar = () => {
                 checked={filters.hidePrivacyPaid}
                 onChange={(event) => setFilters({ hidePrivacyPaid: event.target.checked })}
               />
-              Hide privacy:paid notes
+              Hide paid outputs
             </label>
           </div>
         </div>

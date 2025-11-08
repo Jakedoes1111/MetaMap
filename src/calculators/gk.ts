@@ -1,6 +1,6 @@
 /**
  * Gene Keys hologenetic profile provider contract.
- * TODO: connect a provider for sequence calculations (mark proprietary data with privacy notes).
+ * TODO: connect a provider for sequence calculations (set privacy to paid when licensing requires it).
  */
 export interface GKProvider {
   computeProfile: (input: {

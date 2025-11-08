@@ -37,6 +37,8 @@ const mockRow: DataRow = {
   strength: 1,
   confidence: 0.5,
   weight_system: 1,
+  privacy: "public",
+  provenance: "",
   notes: "",
 };
 
@@ -66,5 +68,7 @@ describe("DataImporter", () => {
     );
 
     expect(parseCsvMock).toHaveBeenCalledOnce();
+    const dataset = useStore.getState().dataset;
+    expect(dataset.some((row) => row.id === mockRow.id && row.privacy === "public")).toBe(true);
   });
 });

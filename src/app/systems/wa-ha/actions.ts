@@ -46,6 +46,8 @@ const buildBaseRow = (
   strength: 0,
   confidence: 0.85,
   weight_system: 1,
+  privacy: "paid",
+  provenance: "",
   notes: `longitude=${position.longitude.toFixed(2)}${
     position.house != null ? `;house=${position.house}` : ""
   }`,

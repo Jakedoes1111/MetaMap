@@ -63,6 +63,8 @@ const ZwdsPage = () => {
           strength: 0,
           confidence: 0.75,
           weight_system: 1,
+          privacy: "public",
+          provenance: `provider:zwds:${variant}`,
           notes: palace.notes ?? "",
         });
       });
@@ -157,7 +159,7 @@ const ZwdsPage = () => {
         <h2 className="text-base font-semibold">Integration notes</h2>
         <ul className="mt-2 list-disc space-y-1 pl-5">
           <li>Map palace outputs to <code>subsystem</code> for school variants.</li>
-          <li>Use <code>notes:&quot;privacy:paid&quot;</code> for proprietary star libraries.</li>
+          <li>Set <code>privacy</code> to <code>paid</code> for proprietary star libraries.</li>
           <li>Log conflicting interpretations via <code>conflict_set</code>.</li>
         </ul>
       </section>

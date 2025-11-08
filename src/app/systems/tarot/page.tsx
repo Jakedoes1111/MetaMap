@@ -92,6 +92,8 @@ const TarotPage = () => {
         strength: 0,
         confidence: 0.5,
         weight_system: 1,
+        privacy: "internal",
+        provenance: "rng:tarot",
         notes: `spread:${spread}; position:${positions[index]}`,
       }),
     );

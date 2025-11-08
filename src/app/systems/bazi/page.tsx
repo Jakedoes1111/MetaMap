@@ -86,6 +86,8 @@ const BaZiPage = () => {
           strength: 0,
           confidence: 0.85,
           weight_system: 1,
+          privacy: "public",
+          provenance: `provider:chineseCalendar:${requestPayload.variant}`,
           notes: `pillar=${pillar.pillar}`,
         });
       });
@@ -110,6 +112,8 @@ const BaZiPage = () => {
           strength: 0,
           confidence: 0.8,
           weight_system: 1,
+          privacy: "public",
+          provenance: `provider:chineseCalendar:${requestPayload.variant}`,
           notes: `duration=${luck.durationYears}y`,
         });
       });

@@ -8,6 +8,14 @@ import { TraditionalFSProvider } from "@/providers/fs/TraditionalFSProvider";
 import { HumanDesignGateProvider } from "@/providers/hd/HumanDesignGateProvider";
 import { GeneKeysProfileProvider } from "@/providers/gk/GeneKeysProfileProvider";
 
+const demoProvidersEnabled = () => {
+  const flag = process.env.NEXT_PUBLIC_ENABLE_DEMO_PROVIDERS;
+  if (flag != null) {
+    return flag === "true" || flag === "1";
+  }
+  return process.env.NODE_ENV !== "production";
+};
+
 let bootstrapped = false;
 
 export const ensureProvidersBootstrapped = () => {
@@ -24,30 +32,32 @@ export const ensureProvidersBootstrapped = () => {
     });
   }
 
-  registerProvider({
-    key: "chineseCalendar",
-    provider: new SolarlunarChineseCalendarProvider(),
-  });
-  registerProvider({
-    key: "zwds",
-    provider: new ClassicZWDSProvider(),
-  });
-  registerProvider({
-    key: "qmdj",
-    provider: new LoShuQMDJProvider(),
-  });
-  registerProvider({
-    key: "fs",
-    provider: new TraditionalFSProvider(),
-  });
-  registerProvider({
-    key: "hd",
-    provider: new HumanDesignGateProvider(),
-  });
-  registerProvider({
-    key: "gk",
-    provider: new GeneKeysProfileProvider(),
-  });
+  if (demoProvidersEnabled()) {
+    registerProvider({
+      key: "chineseCalendar",
+      provider: new SolarlunarChineseCalendarProvider(),
+    });
+    registerProvider({
+      key: "zwds",
+      provider: new ClassicZWDSProvider(),
+    });
+    registerProvider({
+      key: "qmdj",
+      provider: new LoShuQMDJProvider(),
+    });
+    registerProvider({
+      key: "fs",
+      provider: new TraditionalFSProvider(),
+    });
+    registerProvider({
+      key: "hd",
+      provider: new HumanDesignGateProvider(),
+    });
+    registerProvider({
+      key: "gk",
+      provider: new GeneKeysProfileProvider(),
+    });
+  }
 
   bootstrapped = true;
 };

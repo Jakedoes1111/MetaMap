@@ -125,7 +125,7 @@ const GkPage = () => {
         <h2 className="text-base font-semibold">Integration notes</h2>
         <ul className="mt-2 list-disc space-y-1 pl-5">
           <li>Use <code>subsystem</code> to capture profile sequences (e.g. Activation, Venus).</li>
-          <li>Annotate paid datasets with <code>notes:&quot;privacy:paid&quot;</code>.</li>
+          <li>Annotate paid datasets by setting the <code>privacy</code> field to <code>paid</code>.</li>
           <li>Leverage <code>conflict_set</code> for divergent interpretations across schools.</li>
         </ul>
       </section>

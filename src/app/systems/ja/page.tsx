@@ -155,12 +155,14 @@ const JaPage = () => {
       direction_degrees: null,
       timing_window_start: null,
       timing_window_end: null,
-      polarity: "+",
-      strength: 0,
-      confidence: 0.8,
-      weight_system: 1,
-      notes: "",
-    });
+    polarity: "+",
+    strength: 0,
+    confidence: 0.8,
+    weight_system: 1,
+    privacy: "public",
+    provenance: `provider:ephemeris:${birthDetails.ayanamsa}`,
+    notes: "",
+  });
 
     generatedDashas.forEach((dasha) => {
       appendRow({
@@ -179,13 +181,15 @@ const JaPage = () => {
         direction_degrees: null,
         timing_window_start: dasha.start,
         timing_window_end: dasha.finish,
-        polarity: "+",
-        strength: 0,
-        confidence: 0.7,
-        weight_system: 1,
-        notes: "",
-      });
+      polarity: "+",
+      strength: 0,
+      confidence: 0.7,
+      weight_system: 1,
+      privacy: "public",
+      provenance: `provider:ephemeris:${birthDetails.ayanamsa}`,
+      notes: "",
     });
+  });
   };
 
   return (

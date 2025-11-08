@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { useStore } from "@/store/useStore";
+import type { MetaMapStore } from "@/store/useStore";
 import { useStoreHydration } from "@/hooks/useStoreHydration";
 import { applyFilters } from "@/lib/filters";
 import { conflictCount, systemCount, totalRows, unknownShare } from "@/lib/stats";
@@ -17,21 +18,21 @@ import { Timeline } from "@/components/Timeline";
 import { Compass } from "@/components/Compass";
 import { HowItWorksModal } from "@/components/modals/HowItWorksModal";
 import { WeightsPanel } from "@/components/WeightsPanel";
-import { shallow } from "zustand/shallow";
 import { DatasetList } from "@/components/DatasetList";
 import { ProviderStatusPanel } from "@/components/ProviderStatusPanel";
 
 export default function Home() {
   const hydrated = useStoreHydration();
-  const { dataset, filters, tzdbVersion, birthDetails } = useStore(
-    (state) => ({
-      dataset: state.dataset,
-      filters: state.filters,
-      tzdbVersion: state.tzdbVersion,
-      birthDetails: state.birthDetails,
-    }),
-    shallow,
-  );
+  const selection: Pick<
+    MetaMapStore,
+    "dataset" | "filters" | "tzdbVersion" | "birthDetails"
+  > = useStore((state) => ({
+    dataset: state.dataset,
+    filters: state.filters,
+    tzdbVersion: state.tzdbVersion,
+    birthDetails: state.birthDetails,
+  }));
+  const { dataset, filters, tzdbVersion, birthDetails } = selection;
 
   if (!hydrated) {
     return null;

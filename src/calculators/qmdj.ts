@@ -14,7 +14,7 @@ export interface QMDJBoard {
 
 /**
  * Contract for Qi Men Dun Jia computational engines.
- * TODO: integrate third-party calculator respecting licensing ("privacy:paid" where applicable).
+ * TODO: integrate third-party calculator respecting licensing (set `privacy` to `paid` where applicable).
  */
 export interface QMDJProvider {
   generateBoard: (input: {

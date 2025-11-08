@@ -36,10 +36,17 @@ const applyProvenance = (row: DataRow, provenance: DatasetProvenance): DataRow =
   const existingNotes = row.notes?.trim() ?? "";
   const notes = existingNotes.length > 0 ? `${existingNotes} | ${provenanceNote}` : provenanceNote;
   const sourceTool = row.source_tool && row.source_tool.length > 0 ? row.source_tool : provenance.provider;
+  const provenanceTag = `${provenance.provider}:${provenance.timestamp}`;
+  const existingProvenance = row.provenance?.trim() ?? "";
+  const combinedProvenance =
+    existingProvenance.length > 0
+      ? `${existingProvenance} | ${provenanceTag}`
+      : provenanceTag;
   return {
     ...row,
     notes,
     source_tool: sourceTool,
+    provenance: combinedProvenance,
   };
 };
 

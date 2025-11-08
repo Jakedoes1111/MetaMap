@@ -83,12 +83,14 @@ const IchingPage = () => {
       direction_degrees: null,
       timing_window_start: now,
       timing_window_end: now,
-      polarity: "0",
-      strength: 0,
-      confidence: 0.5,
-      weight_system: 1,
-      notes: `lookup:lines=${lines.join("-")}; method:${method}`,
-    });
+    polarity: "0",
+    strength: 0,
+    confidence: 0.5,
+    weight_system: 1,
+    privacy: "internal",
+    provenance: `rng:iching:${method}`,
+    notes: `lookup:lines=${lines.join("-")}; method:${method}`,
+  });
   };
 
   const derivedHexagram = useMemo(

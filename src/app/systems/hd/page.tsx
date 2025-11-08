@@ -87,12 +87,14 @@ const HdPage = () => {
       direction_degrees: null,
       timing_window_start: null,
       timing_window_end: null,
-      polarity: "+",
-      strength: 0,
-      confidence: 0.7,
-      weight_system: 0.6,
-      notes: `authority=${response.data.authority ?? "UNKNOWN"}`,
-    });
+    polarity: "+",
+    strength: 0,
+    confidence: 0.7,
+    weight_system: 0.6,
+    privacy: "public",
+    provenance: "provider:hd",
+    notes: `authority=${response.data.authority ?? "UNKNOWN"}`,
+  });
   };
 
   return (
@@ -156,7 +158,7 @@ const HdPage = () => {
         <h2 className="text-base font-semibold">Integration notes</h2>
         <ul className="mt-2 list-disc space-y-1 pl-5">
           <li>Use <code>HDProvider.computeBodyGraph</code> to populate centres and channels.</li>
-          <li>Tag paid APIs with <code>notes:&quot;privacy:paid&quot;</code> for filter compatibility.</li>
+          <li>Tag paid APIs by setting <code>privacy</code> to <code>paid</code> for filter compatibility.</li>
           <li>Support VARIANT flags for Jovian vs. Genetic Matrix interpretations via <code>subsystem</code>.</li>
         </ul>
       </section>

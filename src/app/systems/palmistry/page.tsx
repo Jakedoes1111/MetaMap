@@ -51,7 +51,9 @@ const PalmistryPage = () => {
       strength: 0,
       confidence: 0.4,
       weight_system: 1,
-      notes: `privacy:local; annotation:${notes || "none"}`,
+      privacy: "internal",
+      provenance: "local:palmistry",
+      notes: `annotation:${notes || "none"}`,
     });
     setNotes("");
   };

@@ -79,6 +79,8 @@ const QmdjPage = () => {
           strength: 0,
           confidence: 0.7,
           weight_system: 1,
+          privacy: "public",
+          provenance: `provider:qmdj:${school}:${arrangement}`,
           notes: `arrangement=${arrangement}`,
         });
       });

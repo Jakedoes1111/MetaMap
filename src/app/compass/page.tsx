@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
-import { shallow } from "zustand/shallow";
 import { useStore } from "@/store/useStore";
+import type { MetaMapStore } from "@/store/useStore";
 import { useStoreHydration } from "@/hooks/useStoreHydration";
 import { applyFilters } from "@/lib/filters";
 import { Compass } from "@/components/Compass";
@@ -11,13 +11,11 @@ import { FilterBar } from "@/components/FilterBar";
 
 const CompassPage = () => {
   const hydrated = useStoreHydration();
-  const { dataset, filters } = useStore(
-    (state) => ({
-      dataset: state.dataset,
-      filters: state.filters,
-    }),
-    shallow,
-  );
+  const selection: Pick<MetaMapStore, "dataset" | "filters"> = useStore((state) => ({
+    dataset: state.dataset,
+    filters: state.filters,
+  }));
+  const { dataset, filters } = selection;
 
   if (!hydrated) {
     return null;

@@ -1,6 +1,6 @@
 /**
  * Human Design chart provider interface.
- * Integrations typically require proprietary datasets (mark rows with notes:"privacy:paid").
+ * Integrations typically require proprietary datasets (set the privacy field to "paid").
  * TODO: implement a provider for BodyGraph calculations.
  */
 export interface HDProvider {
