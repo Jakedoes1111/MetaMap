@@ -10,8 +10,8 @@ export const FilterBar = () => {
   const resetFilters = useStore((state) => state.resetFilters);
 
   const toggleItem = useCallback(
-    <T extends string>(key: "systems" | "categories", value: T) => {
-      const current = new Set(filters[key]);
+    (key: "systems" | "categories", value: string) => {
+      const current = new Set<string>(filters[key] as string[]);
       if (current.has(value)) {
         current.delete(value);
       } else {

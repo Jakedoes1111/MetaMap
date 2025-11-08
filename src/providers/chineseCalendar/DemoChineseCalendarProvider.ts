@@ -68,6 +68,7 @@ export class DemoChineseCalendarProvider implements ChineseCalendarProvider {
   async luckPillars(input: {
     dateTime: DateTime;
     zone: string;
+    gender?: "yin" | "yang";
     variant?: string;
   }): Promise<LuckPillar[]> {
     const inZone = input.dateTime.setZone(input.zone);

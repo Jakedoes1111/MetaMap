@@ -156,11 +156,19 @@ export class SolarlunarChineseCalendarProvider implements ChineseCalendarProvide
   async luckPillars(input: {
     dateTime: DateTime;
     zone: string;
+    gender?: "yin" | "yang";
     variant?: string;
   }): Promise<LuckPillar[]> {
     const local = input.dateTime.setZone(input.zone);
     const data = solarLunar.solar2lunar(local.year, local.month, local.day);
-    const genderForward = input.variant === "yin" ? false : true;
+    const genderForward =
+      input.gender === "yin"
+        ? false
+        : input.gender === "yang"
+          ? true
+          : input.variant === "yin"
+            ? false
+            : true;
     const startAge = computeLuckStartingAge(local, genderForward);
     const stemSymbol = data.gzMonth[0] ?? "甲";
     const startStem = resolveStem(stemSymbol);

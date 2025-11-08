@@ -46,8 +46,8 @@ export interface EphemerisMetadata {
   provider: string;
   /** Human-readable provider version string. */
   version: string;
-  /** Back-end engine used by Swiss Ephemeris (swiss|moshier|jpl). */
-  engine: "swiss" | "moshier" | "jpl";
+  /** Back-end engine used by the ephemeris provider. */
+  engine: "swiss" | "moshier" | "jpl" | "astronomy-engine";
   /**
    * Original request context allowing consumers to trace what configuration
    * produced the response.

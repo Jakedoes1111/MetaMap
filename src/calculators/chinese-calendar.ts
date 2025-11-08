@@ -35,6 +35,7 @@ export interface ChineseCalendarProvider {
   luckPillars: (input: {
     dateTime: DateTime;
     zone: string;
+    gender?: "yin" | "yang";
     variant?: string;
   }) => Promise<LuckPillar[]>;
 }
