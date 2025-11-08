@@ -12,14 +12,15 @@ import type {
 } from "@/calculators";
 
 type ProviderParams = {
-  params: { provider: string };
+  params: { provider: string } | Promise<{ provider: string }>;
 };
 
 const isProviderKey = (key: string): key is ProviderKey => {
   return ["ephemeris", "chineseCalendar", "zwds", "qmdj", "fs", "hd", "gk"].includes(key);
 };
 
-export async function POST(request: Request, { params }: ProviderParams) {
+export async function POST(request: Request, context: ProviderParams) {
+  const params = await context.params;
   if (!isProviderKey(params.provider)) {
     return NextResponse.json(
       { error: `Unknown provider "${params.provider}"` },
@@ -118,6 +119,7 @@ export async function POST(request: Request, { params }: ProviderParams) {
       provider.luckPillars({
         dateTime: birth,
         zone,
+        gender: payload.gender,
         variant: payload.variant,
       }),
     ]);

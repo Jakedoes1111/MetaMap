@@ -11,7 +11,7 @@ type Figure = [number, number, number, number];
 const randomFigure = (): Figure => {
   const bytes = new Uint8Array(4);
   crypto.getRandomValues(bytes);
-  return bytes.map((value) => (value % 2 === 0 ? 0 : 1)) as Figure;
+  return Array.from(bytes, (value) => (value % 2 === 0 ? 0 : 1)) as Figure;
 };
 
 const addFigures = (a: Figure, b: Figure): Figure =>

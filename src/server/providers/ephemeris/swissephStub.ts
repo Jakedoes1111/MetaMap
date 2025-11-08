@@ -110,7 +110,13 @@ const computeLatitude = (julianDay: number, code: number, latAmp: number) => {
   return Number((Math.sin(angle) * latAmp).toFixed(4));
 };
 
-const swe_julday = (year: number, month: number, day: number, hour: number) => {
+const swe_julday = (
+  year: number,
+  month: number,
+  day: number,
+  hour: number,
+  _gregflag?: number,
+) => {
   let y = year;
   let m = month;
   if (m <= 2) {
@@ -210,14 +216,15 @@ const swe_houses_pos = (
   _eps: number,
   _houseSystem: string,
   bodyLongitude: number,
+  _bodyLatitude?: number,
 ) => {
   const reference = normaliseDegrees(bodyLongitude - (armc - 60));
   const housePosition = reference / 30 + 1;
   return { housePosition, housePositionSpeed: 0, housePosition2: 0 };
 };
 
-const swe_set_ephe_path = () => {};
-const swe_set_jpl_file = () => {};
+const swe_set_ephe_path = (_path?: string) => {};
+const swe_set_jpl_file = (_file?: string) => {};
 const swe_version = () => "swisseph-stub";
 const swe_get_ayanamsa_ut = () => currentSiderealOffset;
 

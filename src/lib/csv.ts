@@ -173,7 +173,7 @@ export const rowsToCsv = (rows: DataRow[]): string =>
       notes: row.notes ?? "",
     })),
     {
-      columns: CSV_HEADERS,
+      columns: [...CSV_HEADERS],
     },
   );
 

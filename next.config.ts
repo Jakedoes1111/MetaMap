@@ -1,15 +1,21 @@
-import { resolve } from "node:path";
 import type { NextConfig } from "next";
 
+const swissephStub = "@/server/providers/ephemeris/swissephStub";
+
 const nextConfig: NextConfig = {
+  experimental: {
+    turbopackUseSystemTlsCerts: true,
+  },
+  turbopack: {
+    resolveAlias: {
+      swisseph: swissephStub,
+    },
+  },
   webpack: (config) => {
     config.resolve = config.resolve ?? {};
     config.resolve.alias = config.resolve.alias ?? {};
     if (!config.resolve.alias.swisseph) {
-      config.resolve.alias.swisseph = resolve(
-        __dirname,
-        "src/server/providers/ephemeris/swissephStub",
-      );
+      config.resolve.alias.swisseph = swissephStub;
     }
     return config;
   },
