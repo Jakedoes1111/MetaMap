@@ -24,13 +24,6 @@ MetaMap solves a common problem: self-model systems (astrology, numerology, huma
 - ✅ **Plugin Architecture** - TypeScript interfaces ready for calculator integrations under `src/calculators`
 - ✅ **Accessibility** - WCAG AA compliant with focus styles and prefers-reduced-motion support
 - ✅ **Responsive Design** - Works seamlessly on desktop and mobile devices
-- ✅ **Normalised schema** enforced via Zod with CSV/JSON import/export.
-- ✅ **Visualisations** (timeline, compass, network, heatmap) powered by D3 and CSS variable palettes.
-- ✅ **Adjustable weights** (default HD 0.6, GK 0.5, others 1.0) stored in localStorage.
-- ✅ **RNG tools** for I Ching, Tarot, and Geomancy using `crypto.getRandomValues`.
-- ✅ **Live calculator demos** for ephemeris, Chinese calendar, Zi Wei Dou Shu, Qi Men Dun Jia, Feng Shui, Human Design, and Gene Keys.
-- ✅ **Plug-in ready calculators** with TypeScript interfaces under `src/calculators`.
-- ✅ **Accessibility & responsiveness** (WCAG AA focus styles, prefers-reduced-motion support).
 
 ---
 
