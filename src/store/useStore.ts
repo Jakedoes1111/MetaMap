@@ -17,6 +17,7 @@ import { type ProviderKey, type ProviderStatus } from "@/providers";
 import tzdbPackage from "@vvo/tzdb/package.json";
 
 export type DatasetRow = NormalisedRow;
+type DataRowInput = Omit<DataRow, "id"> & Partial<Pick<DataRow, "id">>;
 
 export interface BirthDetails {
   birthDate: string; // ISO date
@@ -53,9 +54,10 @@ export interface MetaMapStore {
   providerStatus: ProviderStatus[];
   providerErrors: Partial<Record<ProviderKey, string>>;
   providerLoading: Partial<Record<ProviderKey, boolean>>;
-  addRows: (rows: DataRow[]) => void;
-  replaceRows: (rows: DataRow[]) => void;
-  appendRow: (row: DataRow) => void;
+  addRows: (rows: DataRowInput[]) => void;
+  replaceRows: (rows: DataRowInput[]) => void;
+  appendRow: (row: DataRowInput) => void;
+  pruneRows: (predicate: (row: DatasetRow) => boolean) => void;
   clearDataset: () => void;
   setFilters: (filters: Partial<FilterState>) => void;
   resetFilters: () => void;
@@ -65,10 +67,10 @@ export interface MetaMapStore {
   confirmTimezone: (confirmed: boolean) => void;
   setHasHydrated: (value: boolean) => void;
   fetchProviderStatus: () => Promise<void>;
-  invokeProvider: <Payload, Response>(
+  invokeProvider: <Payload, Result>(
     key: ProviderKey,
     payload: Payload,
-  ) => Promise<{ status: number; data: Response | null }>;
+  ) => Promise<{ status: number; data: Result | null }>;
   clearProviderError: (key: ProviderKey) => void;
 }
 
@@ -164,6 +166,48 @@ export const useStore = create<MetaMapStore>()(
         normaliseRows(buildSeedRows(defaultBirthDetails)),
         WeightDefaults,
       );
+      const invokeProvider = async <Payload, Result>(
+        key: ProviderKey,
+        payload: Payload,
+      ): Promise<{ status: number; data: Result | null }> => {
+        set((state) => ({
+          providerLoading: { ...state.providerLoading, [key]: true },
+          providerErrors: { ...state.providerErrors, [key]: undefined },
+        }));
+        try {
+          const response = await fetch(`/api/providers/${key}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify(payload ?? {}),
+          });
+          const data = (await response.json().catch(() => null)) as Result | null;
+          if (!response.ok) {
+            const message =
+              data && typeof data === "object" && data !== null && "error" in data
+                ? String((data as { error: unknown }).error)
+                : `Provider request failed (${response.status})`;
+            set((state) => ({
+              providerErrors: { ...state.providerErrors, [key]: message },
+            }));
+          }
+          return { status: response.status, data };
+        } catch (error) {
+          const message =
+            error instanceof Error ? error.message : "Unknown provider invocation error";
+          set((state) => ({
+            providerErrors: { ...state.providerErrors, [key]: message },
+          }));
+          return { status: 0, data: null };
+        } finally {
+          set((state) => ({
+            providerLoading: { ...state.providerLoading, [key]: false },
+          }));
+        }
+      };
+
       return {
         dataset: seedRows,
         birthDetails: defaultBirthDetails,
@@ -175,17 +219,23 @@ export const useStore = create<MetaMapStore>()(
         providerErrors: {},
         providerLoading: {},
         addRows: (rows) => {
-          const combined = normaliseRows([...get().dataset, ...rows]);
+          const withIds = rows.map((row) => ({ ...row, id: row.id ?? createId() }));
+          const combined = normaliseRows([...get().dataset, ...withIds]);
           set({ dataset: reweight(combined, get().weights) });
         },
         replaceRows: (rows) => {
-          const normalised = normaliseRows(rows);
+          const withIds = rows.map((row) => ({ ...row, id: row.id ?? createId() }));
+          const normalised = normaliseRows(withIds);
           set({ dataset: reweight(normalised, get().weights) });
         },
         appendRow: (row) => {
           const idRow = { ...row, id: row.id ?? createId() };
           const combined = normaliseRows([...get().dataset, idRow]);
           set({ dataset: reweight(combined, get().weights) });
+        },
+        pruneRows: (predicate) => {
+          const filtered = get().dataset.filter((row) => !predicate(row));
+          set({ dataset: reweight(filtered, get().weights) });
         },
         clearDataset: () =>
           set({
@@ -244,44 +294,7 @@ export const useStore = create<MetaMapStore>()(
             console.error("Provider status request failed", error);
           }
         },
-        invokeProvider: async (key, payload) => {
-          set((state) => ({
-            providerLoading: { ...state.providerLoading, [key]: true },
-            providerErrors: { ...state.providerErrors, [key]: undefined },
-          }));
-          try {
-            const response = await fetch(`/api/providers/${key}`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-              },
-              body: JSON.stringify(payload ?? {}),
-            });
-            const data = (await response.json().catch(() => null)) as Response | null;
-            if (!response.ok) {
-              const message =
-                data && typeof data === "object" && data !== null && "error" in data
-                  ? String((data as { error: unknown }).error)
-                  : `Provider request failed (${response.status})`;
-              set((state) => ({
-                providerErrors: { ...state.providerErrors, [key]: message },
-              }));
-            }
-            return { status: response.status, data };
-          } catch (error) {
-            const message =
-              error instanceof Error ? error.message : "Unknown provider invocation error";
-            set((state) => ({
-              providerErrors: { ...state.providerErrors, [key]: message },
-            }));
-            return { status: 0, data: null };
-          } finally {
-            set((state) => ({
-              providerLoading: { ...state.providerLoading, [key]: false },
-            }));
-          }
-        },
+        invokeProvider: invokeProvider as MetaMapStore["invokeProvider"],
         clearProviderError: (key) =>
           set((state) => ({
             providerErrors: { ...state.providerErrors, [key]: undefined },

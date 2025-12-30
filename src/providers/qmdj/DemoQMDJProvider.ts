@@ -20,7 +20,7 @@ export class DemoQMDJProvider implements QMDJProvider {
     school: "Zhi Run" | "Chai Bu" | string;
   }): Promise<QMDJBoard> {
     const dt = input.dateTime.setZone(input.zone);
-    const seed = Math.abs(Math.floor(dt.ts / (1000 * 60))) % stars.length;
+    const seed = Math.abs(Math.floor(dt.toMillis() / (1000 * 60))) % stars.length;
     const arrangementOffset = input.arrangement === "yang" ? 1 : -1;
     const starSet = rotateArray(stars, seed);
     const doorSet = rotateArray(doors, seed + arrangementOffset);

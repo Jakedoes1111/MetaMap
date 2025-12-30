@@ -2,17 +2,25 @@ import { NextResponse } from "next/server";
 import { DateTime } from "luxon";
 import { getProvider, ProviderUnavailableError, type ProviderKey } from "@/providers";
 import { ensureProvidersBootstrapped } from "@/providers/bootstrap";
-import type { ChineseCalendarProvider, QMDJProvider, ZWDSProvider } from "@/calculators";
+import type {
+  ChineseCalendarProvider,
+  FSProvider,
+  GKProvider,
+  HDProvider,
+  QMDJProvider,
+  ZWDSProvider,
+} from "@/calculators";
 
 type ProviderParams = {
-  params: { provider: string };
+  params: { provider: string } | Promise<{ provider: string }>;
 };
 
 const isProviderKey = (key: string): key is ProviderKey => {
   return ["ephemeris", "chineseCalendar", "zwds", "qmdj", "fs", "hd", "gk"].includes(key);
 };
 
-export async function POST(request: Request, { params }: ProviderParams) {
+export async function POST(request: Request, context: ProviderParams) {
+  const params = await context.params;
   if (!isProviderKey(params.provider)) {
     return NextResponse.json(
       { error: `Unknown provider "${params.provider}"` },
@@ -67,7 +75,7 @@ export async function POST(request: Request, { params }: ProviderParams) {
     const latitude = payload.coordinates?.latitude ?? 0;
     const longitude = payload.coordinates?.longitude ?? 0;
     const provider = getProvider("ephemeris");
-    const positions = await provider.getPositions(
+    const ephemeris = await provider.getPositions(
       birth,
       { latitude, longitude },
       {
@@ -78,7 +86,7 @@ export async function POST(request: Request, { params }: ProviderParams) {
     );
 
     return NextResponse.json({
-      positions,
+      ephemeris,
     });
   }
 
@@ -111,6 +119,7 @@ export async function POST(request: Request, { params }: ProviderParams) {
       provider.luckPillars({
         dateTime: birth,
         zone,
+        gender: payload.gender,
         variant: payload.variant,
       }),
     ]);
@@ -175,6 +184,80 @@ export async function POST(request: Request, { params }: ProviderParams) {
     });
 
     return NextResponse.json({ board });
+  }
+
+  if (params.provider === "fs") {
+    const payload = await request.json().catch(() => null) as {
+      sittingDegrees?: number;
+      facingDegrees?: number;
+      period?: number;
+      birthYear?: number;
+      gender?: "female" | "male" | "unspecified";
+    } | null;
+
+    if (
+      payload == null ||
+      typeof payload.sittingDegrees !== "number" ||
+      typeof payload.facingDegrees !== "number" ||
+      typeof payload.period !== "number" ||
+      typeof payload.birthYear !== "number" ||
+      (payload.gender && !["female", "male", "unspecified"].includes(payload.gender))
+    ) {
+      return NextResponse.json({ error: "Missing or invalid Feng Shui payload." }, { status: 400 });
+    }
+
+    const provider = getProvider("fs") as FSProvider;
+    const [flyingStars, eightMansions] = await Promise.all([
+      provider.computeFlyingStars({
+        sittingDegrees: payload.sittingDegrees,
+        facingDegrees: payload.facingDegrees,
+        period: payload.period,
+      }),
+      provider.computeEightMansions({
+        birthYear: payload.birthYear,
+        gender: payload.gender ?? "unspecified",
+      }),
+    ]);
+
+    return NextResponse.json({ flyingStars, eightMansions });
+  }
+
+  if (params.provider === "hd") {
+    const payload = await request.json().catch(() => null) as {
+      birthIso?: string;
+      timezone?: string;
+    } | null;
+
+    if (!payload?.birthIso || !payload.timezone) {
+      return NextResponse.json({ error: "Missing birthIso or timezone for Human Design request." }, { status: 400 });
+    }
+
+    const provider = getProvider("hd") as HDProvider;
+    const bodyGraph = await provider.computeBodyGraph({
+      birthDateTime: payload.birthIso,
+      timezone: payload.timezone,
+    });
+
+    return NextResponse.json(bodyGraph);
+  }
+
+  if (params.provider === "gk") {
+    const payload = await request.json().catch(() => null) as {
+      birthIso?: string;
+      timezone?: string;
+    } | null;
+
+    if (!payload?.birthIso || !payload.timezone) {
+      return NextResponse.json({ error: "Missing birthIso or timezone for Gene Keys request." }, { status: 400 });
+    }
+
+    const provider = getProvider("gk") as GKProvider;
+    const profile = await provider.computeProfile({
+      birthDateTime: payload.birthIso,
+      timezone: payload.timezone,
+    });
+
+    return NextResponse.json(profile);
   }
 
   return NextResponse.json(

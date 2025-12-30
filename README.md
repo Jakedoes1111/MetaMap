@@ -4,6 +4,7 @@
 
 MetaMap is a modern TypeScript + React web application (built with Next.js) that allows you to explore and compare insights from various self-model systems—including Western Astrology (WA/HA), Jyotish (JA), BaZi, Zi Wei Dou Shu, Feng Shui, Human Design, Gene Keys, Numerology, Tarot, I Ching, and more—all within one cohesive interface.
 
+<<<<<<< HEAD
 ## What is MetaMap?
 
 MetaMap solves a common problem: self-model systems (astrology, numerology, human design, etc.) each have their own data formats, tools, and interfaces, making it difficult to see connections and patterns across systems. MetaMap provides:
@@ -23,6 +24,15 @@ MetaMap solves a common problem: self-model systems (astrology, numerology, huma
 - ✅ **Plugin Architecture** - TypeScript interfaces ready for calculator integrations
 - ✅ **Accessibility** - WCAG AA compliant with reduced-motion support
 - ✅ **Responsive Design** - Works seamlessly on desktop and mobile devices
+=======
+- ✅ **Normalised schema** enforced via Zod with CSV/JSON import/export.
+- ✅ **Visualisations** (timeline, compass, network, heatmap) powered by D3 and CSS variable palettes.
+- ✅ **Adjustable weights** (default HD 0.6, GK 0.5, others 1.0) stored in localStorage.
+- ✅ **RNG tools** for I Ching, Tarot, and Geomancy using `crypto.getRandomValues`.
+- ✅ **Live calculator demos** for ephemeris, Chinese calendar, Zi Wei Dou Shu, Qi Men Dun Jia, Feng Shui, Human Design, and Gene Keys.
+- ✅ **Plug-in ready calculators** with TypeScript interfaces under `src/calculators`.
+- ✅ **Accessibility & responsiveness** (WCAG AA focus styles, prefers-reduced-motion support).
+>>>>>>> 73deeb7677b6addb6917f1e37aa3a81b6dfa408c
 
 ---
 
@@ -134,13 +144,7 @@ timing_window_end,polarity,strength,confidence,weight_system,notes
 
 ### Sample Data
 
-A sample CSV file is included at `public/sample.csv` with representative rows covering:
-- Western Astrology (WA)
-- Feng Shui (FS)
-- BaZi (Four Pillars)
-- Numerology
-- Tarot readings
-- Privacy flags (`privacy:paid` examples)
+A sample CSV file is included at `public/sample.csv` with representative rows spanning natal astrology, Jyotiṣa, Feng Shui, BaZi, Qi Men Dun Jia, Human Design, Gene Keys, numerology, and Tarot (including a `privacy:paid` note example).
 
 ---
 
@@ -158,7 +162,7 @@ MetaMap uses a plugin architecture for calculator integrations. Provider interfa
 
 ### Demo Providers
 
-The app includes demo providers for Ephemeris, Chinese Calendar, Zi Wei Dou Shu, and Qi Men Dun Jia when `NEXT_PUBLIC_ENABLE_DEMO_PROVIDERS=true` (enabled by default in non-production).
+The app includes demo providers for Ephemeris, Chinese Calendar, Zi Wei Dou Shu, Qi Men Dun Jia, Feng Shui, Human Design, and Gene Keys when `NEXT_PUBLIC_ENABLE_DEMO_PROVIDERS=true` (enabled by default in non-production). Register licensed providers by calling `registerProvider` in `src/providers/bootstrap.ts` or supplying your own bootstrap module. Production builds should disable the demo flag.
 
 ### Integrating Your Own Providers
 

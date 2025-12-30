@@ -13,12 +13,14 @@ const ZwdsPage = () => {
     providerLoading,
     providerErrors,
     clearProviderError,
+    appendRow,
   } = useStore((state) => ({
     birthDetails: state.birthDetails,
     invokeProvider: state.invokeProvider,
     providerLoading: state.providerLoading,
     providerErrors: state.providerErrors,
     clearProviderError: state.clearProviderError,
+    appendRow: state.appendRow,
   }));
 
   const [chart, setChart] = useState<ZWDSPalaceReading[] | null>(null);
@@ -39,6 +41,31 @@ const ZwdsPage = () => {
     });
     if (response.status === 200 && response.data) {
       setChart(response.data.chart);
+      const birthIso = `${birthDetails.birthDate}T${birthDetails.birthTime}`;
+      response.data.chart.forEach((palace) => {
+        appendRow({
+          person_id: "default-person",
+          birth_datetime_local: birthIso,
+          birth_timezone: birthDetails.timezone,
+          system: "ZWDS",
+          subsystem: variant,
+          source_tool: "zwds",
+          source_url_or_ref: "",
+          data_point: `${palace.palace} palace`,
+          verbatim_text: palace.stars.join(", "),
+          category: "Guidance",
+          subcategory: "Palace",
+          direction_cardinal: "",
+          direction_degrees: null,
+          timing_window_start: null,
+          timing_window_end: null,
+          polarity: "+",
+          strength: 0,
+          confidence: 0.75,
+          weight_system: 1,
+          notes: palace.notes ?? "",
+        });
+      });
     }
   };
 
@@ -48,11 +75,11 @@ const ZwdsPage = () => {
       description="Twelve palace grid populated by the configured ZWDS provider."
     >
       <WarningBanner
-        title={chart ? "Demo output" : "UNKNOWN"}
+        title={chart ? "Chart computed" : "Awaiting provider"}
         description={
           chart
-            ? "Demo chart displayed for development. Connect licensed Zi Wei Dou Shu data for production use."
-            : "Chart values require a ZWDS calculator. Until connected, palaces remain UNKNOWN to respect the truth standard."
+            ? "Twelve palaces populated using the configured Zi Wei Dou Shu provider."
+            : "Invoke the provider to derive palace stars and notes from the birth data."
         }
       />
       <section className="rounded-lg border border-muted/50 bg-white p-4 shadow-card dark:bg-slate-900">
