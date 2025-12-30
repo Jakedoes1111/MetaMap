@@ -1,6 +1,6 @@
 # 🗺️ MetaMap
 
-**A unified platform for exploring multiple self-model systems through a single, normalized dataset.**
+**Explore and compare insights from astrology, numerology, human design, and other personal insight systems—all in one unified platform.**
 
 MetaMap is a modern TypeScript + React web application (built with Next.js) that allows you to explore and compare insights from various self-model systems—including Western Astrology (WA/HA), Jyotish (JA), BaZi, Zi Wei Dou Shu, Feng Shui, Human Design, Gene Keys, Numerology, Tarot, I Ching, and more—all within one cohesive interface.
 
