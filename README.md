@@ -4,7 +4,6 @@
 
 MetaMap is a modern TypeScript + React web application (built with Next.js) that allows you to explore and compare insights from various self-model systems—including Western Astrology (WA/HA), Jyotish (JA), BaZi, Zi Wei Dou Shu, Feng Shui, Human Design, Gene Keys, Numerology, Tarot, I Ching, and more—all within one cohesive interface.
 
-<<<<<<< HEAD
 ## What is MetaMap?
 
 MetaMap solves a common problem: self-model systems (astrology, numerology, human design, etc.) each have their own data formats, tools, and interfaces, making it difficult to see connections and patterns across systems. MetaMap provides:
@@ -24,7 +23,6 @@ MetaMap solves a common problem: self-model systems (astrology, numerology, huma
 - ✅ **Plugin Architecture** - TypeScript interfaces ready for calculator integrations
 - ✅ **Accessibility** - WCAG AA compliant with reduced-motion support
 - ✅ **Responsive Design** - Works seamlessly on desktop and mobile devices
-=======
 - ✅ **Normalised schema** enforced via Zod with CSV/JSON import/export.
 - ✅ **Visualisations** (timeline, compass, network, heatmap) powered by D3 and CSS variable palettes.
 - ✅ **Adjustable weights** (default HD 0.6, GK 0.5, others 1.0) stored in localStorage.
@@ -32,7 +30,6 @@ MetaMap solves a common problem: self-model systems (astrology, numerology, huma
 - ✅ **Live calculator demos** for ephemeris, Chinese calendar, Zi Wei Dou Shu, Qi Men Dun Jia, Feng Shui, Human Design, and Gene Keys.
 - ✅ **Plug-in ready calculators** with TypeScript interfaces under `src/calculators`.
 - ✅ **Accessibility & responsiveness** (WCAG AA focus styles, prefers-reduced-motion support).
->>>>>>> 73deeb7677b6addb6917f1e37aa3a81b6dfa408c
 
 ---
 
