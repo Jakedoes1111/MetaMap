@@ -264,10 +264,46 @@ public/                   # 📁 Static assets (sample CSV, SVGs)
 
 ## 🤝 Contributing
 
-1. 📖 Review the [Implementation Plan](IMPLEMENTATION_PLAN.md) for roadmap details
-2. ✅ Check existing tests before making changes
-3. 🔍 Ensure `npm run lint` and `npm run test` pass
-4. 💅 Follow the existing code style (Prettier + ESLint)
+**We welcome and appreciate contributions from everyone!** 🌟
+
+Whether you're a seasoned developer, just starting out, or passionate about self-model systems, there are many ways to contribute to MetaMap. Your help makes this project better for everyone.
+
+### 🌈 Ways to Contribute
+
+- 💻 **Code Contributions**: Fix bugs, add features, improve performance, or enhance documentation
+- 🐛 **Bug Reports**: Found an issue? Let us know! Clear bug reports help us improve
+- 💡 **Feature Ideas**: Have a great idea? We'd love to hear it
+- 📝 **Documentation**: Help improve docs, add examples, or clarify confusing sections
+- 🧪 **Testing**: Test new features, write tests, or improve test coverage
+- 🎨 **Design & UX**: Improve the user interface, accessibility, or visual design
+- 🌍 **Translations**: Help make MetaMap accessible in more languages
+- 📚 **Knowledge Sharing**: Share your expertise about self-model systems
+
+### 🚀 Getting Started
+
+1. 📖 **Familiarize yourself**: Review the [Implementation Plan](IMPLEMENTATION_PLAN.md) to understand the roadmap and current priorities
+2. 🍴 **Fork & Clone**: Fork the repository and clone it locally
+3. 🌿 **Create a branch**: Create a new branch for your contribution (`git checkout -b feature/your-feature-name`)
+4. 💻 **Make changes**: Write clean, well-documented code
+5. ✅ **Test your changes**: Ensure `npm run lint` and `npm run test` pass
+6. 📤 **Submit a PR**: Push your branch and open a pull request with a clear description
+
+### 📋 Guidelines
+
+- 💅 **Code Style**: Follow the existing code style (Prettier + ESLint will help)
+- ✅ **Testing**: Add tests for new features and ensure existing tests pass
+- 📝 **Documentation**: Update relevant documentation when adding features
+- 💬 **Communication**: Be respectful, inclusive, and constructive in all interactions
+- 🎯 **Scope**: Keep PRs focused on a single feature or fix when possible
+
+### ❓ Questions?
+
+Not sure where to start? Have questions about the codebase? We're here to help! Feel free to:
+- Open an issue with your question
+- Check existing issues and discussions
+- Reach out through the project's communication channels
+
+**Thank you for considering contributing to MetaMap!** 🙏 Every contribution, no matter how small, makes a difference.
 
 ---
 
