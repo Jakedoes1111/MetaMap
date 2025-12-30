@@ -1,4 +1,4 @@
-import { DateTime } from "luxon";
+import type { DateTime } from "luxon";
 import type { QMDJBoard, QMDJProvider, QMDJCell } from "@/calculators";
 
 const PALACES = [

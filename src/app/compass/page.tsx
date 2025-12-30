@@ -17,11 +17,11 @@ const CompassPage = () => {
   }));
   const { dataset, filters } = selection;
 
+  const filteredRows = useMemo(() => applyFilters(dataset, filters), [dataset, filters]);
+
   if (!hydrated) {
     return null;
   }
-
-  const filteredRows = useMemo(() => applyFilters(dataset, filters), [dataset, filters]);
 
   const directionalRows = filteredRows.filter(
     (row) => Boolean(row.direction_cardinal) || row.direction_degrees != null,

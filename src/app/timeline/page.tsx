@@ -21,10 +21,11 @@ const TimelinePage = () => {
   );
   const { dataset, filters, birthDetails } = selection;
 
+  const filteredRows = useMemo(() => applyFilters(dataset, filters), [dataset, filters]);
+
   if (!hydrated) {
     return null;
   }
-  const filteredRows = useMemo(() => applyFilters(dataset, filters), [dataset, filters]);
   const timingRows = filteredRows.filter(
     (row) => row.timing_window_start && row.timing_window_end,
   );

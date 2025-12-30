@@ -34,10 +34,6 @@ export default function Home() {
   }));
   const { dataset, filters, tzdbVersion, birthDetails } = selection;
 
-  if (!hydrated) {
-    return null;
-  }
-
   const filteredRows = useMemo(() => applyFilters(dataset, filters), [dataset, filters]);
 
   const stats = useMemo(
@@ -49,6 +45,10 @@ export default function Home() {
     }),
     [filteredRows],
   );
+
+  if (!hydrated) {
+    return null;
+  }
 
   return (
     <main className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-10 lg:px-8">

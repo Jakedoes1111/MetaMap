@@ -1,5 +1,5 @@
+import type { AstroTime } from "astronomy-engine";
 import {
-  AstroTime,
   Body,
   DEG2RAD,
   Ecliptic,

@@ -1,4 +1,4 @@
-import { DateTime } from "luxon";
+import type { DateTime } from "luxon";
 
 const BASE_OFFSETS: Record<string, number> = {
   lahiri: 23.85,
