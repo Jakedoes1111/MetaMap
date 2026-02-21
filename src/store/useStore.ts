@@ -214,7 +214,7 @@ export const useStore = create<MetaMapStore>()(
         filters: defaultFilters,
         weights: { ...WeightDefaults },
         tzdbVersion,
-        hasHydrated: !isBrowser,
+        hasHydrated: false,
         providerStatus: [],
         providerErrors: {},
         providerLoading: {},

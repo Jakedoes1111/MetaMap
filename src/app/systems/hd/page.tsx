@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { WarningBanner } from "@/components/WarningBanner";
 import { SystemPageLayout } from "@/components/SystemPageLayout";
 import { useStore } from "@/store/useStore";
@@ -26,7 +27,7 @@ const HdPage = () => {
     clearProviderError,
     appendRow,
     pruneRows,
-  } = useStore((state) => ({
+  } = useStore(useShallow((state) => ({
     birthDetails: state.birthDetails,
     invokeProvider: state.invokeProvider,
     providerLoading: state.providerLoading,
@@ -34,7 +35,7 @@ const HdPage = () => {
     clearProviderError: state.clearProviderError,
     appendRow: state.appendRow,
     pruneRows: state.pruneRows,
-  }));
+  })));
 
   const [bodyGraph, setBodyGraph] = useState<{
     centres: Record<string, "defined" | "undefined">;

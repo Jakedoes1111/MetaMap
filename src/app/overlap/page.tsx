@@ -2,16 +2,17 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { useStore } from "@/store/useStore";
 import { applyFilters } from "@/lib/filters";
 import { Network } from "@/components/Network";
 import { FilterBar } from "@/components/FilterBar";
 
 const OverlapPage = () => {
-  const { dataset, filters } = useStore((state) => ({
+  const { dataset, filters } = useStore(useShallow((state) => ({
     dataset: state.dataset,
     filters: state.filters,
-  }));
+  })));
 
   const filteredRows = useMemo(() => applyFilters(dataset, filters), [dataset, filters]);
 

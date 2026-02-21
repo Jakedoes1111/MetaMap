@@ -72,10 +72,13 @@ This runs a Node 20 Alpine environment with the app available on port 3010.
 | `npm run dev`        | 🚀 Start the Next.js development server (port 3010)     |
 | `npm run build`      | 🏗️ Create production build                                |
 | `npm run start`      | ▶️ Start production server                                |
+| `npm run type-check` | 🔎 Run TypeScript checks (`tsc --noEmit`)                |
 | `npm run lint`       | 🔍 Run ESLint (TypeScript + React + jsx-a11y)            |
 | `npm run test`       | 🧪 Run Vitest unit tests with jsdom                       |
 | `npm run test:ci`    | 📊 Run Vitest with coverage report                       |
-| `npm run test:e2e`   | 🎭 Run Playwright E2E tests (requires dev server)       |
+| `npm run test:e2e`   | 🎭 Run Playwright E2E tests (auto-starts app server)    |
+| `npm run playwright:install` | 🧰 Install Playwright browsers/deps explicitly    |
+| `npm run playwright:install:ci` | 🧰 Install Playwright + OS deps for CI runners |
 | `npm run format`     | 💅 Format code with Prettier                             |
 
 ---
@@ -159,6 +162,17 @@ MetaMap uses a plugin architecture for calculator integrations. Provider interfa
 
 The app includes demo providers for Ephemeris, Chinese Calendar, Zi Wei Dou Shu, Qi Men Dun Jia, Feng Shui, Human Design, and Gene Keys when `NEXT_PUBLIC_ENABLE_DEMO_PROVIDERS=true` (enabled by default in non-production). Register licensed providers by calling `registerProvider` in `src/providers/bootstrap.ts` or supplying your own bootstrap module. Production builds should disable the demo flag.
 
+### ⚙️ Environment Variables
+
+Copy `.env.example` to `.env.local` and set values for your deployment:
+
+- `NEXT_PUBLIC_ENABLE_DEMO_PROVIDERS` (default non-production: `true`, production: `false`)
+- `SWISS_EPHEMERIS_ENABLED`
+- `SWISS_EPHEMERIS_ENGINE` (`swiss`, `moshier`, `jpl`)
+- `SWISS_EPHEMERIS_DATA_PATH`, `SWISS_EPHEMERIS_JPL_FILE`
+- `SWISS_EPHEMERIS_DEFAULT_HOUSE_SYSTEM`, `SWISS_EPHEMERIS_DEFAULT_AYANAMSA`
+- `SWISS_EPHEMERIS_LICENSE_KEY`, `SWISS_EPHEMERIS_LICENSE_FILE`
+
 ### 🔌 Integrating Your Own Providers
 
 1. 📝 Implement the provider interface from `src/calculators/[system].ts`
@@ -184,6 +198,10 @@ MetaMap follows strict principles:
 - 💾 **Local Storage**: Palmistry and MianXiang uploads stay in the browser
 - 🔒 **Privacy Flags**: Support for marking paid/proprietary data sources
 - ⚠️ **Disclaimers**: "No medical, legal or financial advice. Cultural systems shown respectfully; outcomes are not certainties."
+
+### ❤️ Health Check
+
+Runtime health is exposed at `GET /api/health` for container probes and uptime checks.
 
 ### 📚 References
 
@@ -212,17 +230,44 @@ npx vitest run
 
 ### 🎭 End-to-End Tests
 
-Playwright E2E tests verify CSV import/export workflows:
+Playwright E2E tests verify CSV import/export workflows and automatically start the app server through Playwright `webServer`:
 
 ```bash
-# Terminal 1: Start dev server
-npm run dev
+# Install browser locally once
+npm run playwright:install
 
-# Terminal 2: Run E2E tests
+# Run E2E
 npm run test:e2e
 ```
 
-Install Playwright browsers first: `npx playwright install --with-deps`
+For CI runners, use: `npm run playwright:install:ci`
+
+---
+
+## 🚚 Deployment
+
+### ▲ Vercel (recommended managed target)
+
+Deployment config is committed in `vercel.json` and disables demo providers by default.
+
+```bash
+npm i -g vercel
+vercel --prod
+```
+
+### 🐳 Docker (self-hosted target)
+
+Production image uses Next.js standalone output, non-root runtime user, and `/api/health` healthchecks.
+
+```bash
+docker compose up --build -d
+```
+
+---
+
+## 📝 Release Notes
+
+See `CHANGELOG.md` for release entries. Current release version: `0.2.0`.
 
 ---
 

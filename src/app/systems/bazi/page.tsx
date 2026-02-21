@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { WarningBanner } from "@/components/WarningBanner";
 import { SystemPageLayout } from "@/components/SystemPageLayout";
 import { useStore } from "@/store/useStore";
@@ -30,7 +31,7 @@ const BaZiPage = () => {
     clearProviderError,
     appendRow,
     pruneRows,
-  } = useStore((state) => ({
+  } = useStore(useShallow((state) => ({
     birthDetails: state.birthDetails,
     invokeProvider: state.invokeProvider,
     providerLoading: state.providerLoading,
@@ -38,7 +39,7 @@ const BaZiPage = () => {
     clearProviderError: state.clearProviderError,
     appendRow: state.appendRow,
     pruneRows: state.pruneRows,
-  }));
+  })));
 
   const [pillars, setPillars] = useState<BaZiPillar[] | null>(null);
   const [luckPillars, setLuckPillars] = useState<LuckPillar[]>([]);

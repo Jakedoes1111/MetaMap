@@ -3,10 +3,12 @@ import type { NextConfig } from "next";
 const swissephStub = "@/server/providers/ephemeris/swissephStub";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   experimental: {
     turbopackUseSystemTlsCerts: true,
   },
   turbopack: {
+    root: process.cwd(),
     resolveAlias: {
       swisseph: swissephStub,
     },

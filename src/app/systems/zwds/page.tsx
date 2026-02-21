@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { WarningBanner } from "@/components/WarningBanner";
 import { SystemPageLayout } from "@/components/SystemPageLayout";
 import { useStore } from "@/store/useStore";
@@ -14,14 +15,14 @@ const ZwdsPage = () => {
     providerErrors,
     clearProviderError,
     appendRow,
-  } = useStore((state) => ({
+  } = useStore(useShallow((state) => ({
     birthDetails: state.birthDetails,
     invokeProvider: state.invokeProvider,
     providerLoading: state.providerLoading,
     providerErrors: state.providerErrors,
     clearProviderError: state.clearProviderError,
     appendRow: state.appendRow,
-  }));
+  })));
 
   const [chart, setChart] = useState<ZWDSPalaceReading[] | null>(null);
   const [variant, setVariant] = useState("classic");

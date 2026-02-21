@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { WarningBanner } from "@/components/WarningBanner";
 import { SystemPageLayout } from "@/components/SystemPageLayout";
 import { useStore } from "@/store/useStore";
@@ -25,7 +26,7 @@ const FsPage = () => {
     clearProviderError,
     appendRow,
     pruneRows,
-  } = useStore((state) => ({
+  } = useStore(useShallow((state) => ({
     birthDetails: state.birthDetails,
     invokeProvider: state.invokeProvider,
     providerLoading: state.providerLoading,
@@ -33,7 +34,7 @@ const FsPage = () => {
     clearProviderError: state.clearProviderError,
     appendRow: state.appendRow,
     pruneRows: state.pruneRows,
-  }));
+  })));
 
   const [period, setPeriod] = useState(8);
   const [facing, setFacing] = useState<number | null>(null);

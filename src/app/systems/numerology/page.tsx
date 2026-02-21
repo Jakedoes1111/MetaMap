@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { WarningBanner } from "@/components/WarningBanner";
 import { SystemPageLayout } from "@/components/SystemPageLayout";
 import { useStore } from "@/store/useStore";
@@ -8,10 +9,10 @@ import { computeLifePath, computeBirthNumber, computeNameNumber } from "@/lib/nu
 import { createId } from "@/lib/id";
 
 const NumerologyPage = () => {
-  const { birthDetails, appendRow } = useStore((state) => ({
+  const { birthDetails, appendRow } = useStore(useShallow((state) => ({
     birthDetails: state.birthDetails,
     appendRow: state.appendRow,
-  }));
+  })));
   const [fullName, setFullName] = useState("Sample Name");
 
   const lifePath = computeLifePath(birthDetails.birthDate);

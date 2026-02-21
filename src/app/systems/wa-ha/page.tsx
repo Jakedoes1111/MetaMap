@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { useStore } from "@/store/useStore";
 import { WarningBanner } from "@/components/WarningBanner";
 import { SystemPageLayout } from "@/components/SystemPageLayout";
@@ -8,13 +9,13 @@ import type { EphemerisBody, EphemerisResponse } from "@/lib/ephemeris";
 import { persistEphemerisResults } from "./actions";
 
 const WaHaPage = () => {
-  const { birthDetails, setBirthDetails, dataset, addRows, invokeProvider } = useStore((state) => ({
+  const { birthDetails, setBirthDetails, dataset, addRows, invokeProvider } = useStore(useShallow((state) => ({
     birthDetails: state.birthDetails,
     setBirthDetails: state.setBirthDetails,
     dataset: state.dataset,
     addRows: state.addRows,
     invokeProvider: state.invokeProvider,
-  }));
+  })));
 
   const [isComputing, setIsComputing] = useState(false);
   const [error, setError] = useState<string | null>(null);

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { WarningBanner } from "@/components/WarningBanner";
 import { SystemPageLayout } from "@/components/SystemPageLayout";
 import { useStore } from "@/store/useStore";
@@ -16,7 +17,7 @@ const GkPage = () => {
     clearProviderError,
     appendRow,
     pruneRows,
-  } = useStore((state) => ({
+  } = useStore(useShallow((state) => ({
     birthDetails: state.birthDetails,
     invokeProvider: state.invokeProvider,
     providerLoading: state.providerLoading,
@@ -24,7 +25,7 @@ const GkPage = () => {
     clearProviderError: state.clearProviderError,
     appendRow: state.appendRow,
     pruneRows: state.pruneRows,
-  }));
+  })));
 
   const [profile, setProfile] = useState<{ name: string; geneKey: number; line?: number }[] | null>(null);
 

@@ -10,44 +10,62 @@ import { GeneKeysProfileProvider } from "@/providers/gk/GeneKeysProfileProvider"
 
 let bootstrapped = false;
 
+const parseBoolean = (value?: string) => {
+  if (!value) {
+    return false;
+  }
+  return /^(true|1|yes|on)$/i.test(value.trim());
+};
+
+const shouldEnableDemoProviders = () => {
+  const flag = process.env.NEXT_PUBLIC_ENABLE_DEMO_PROVIDERS;
+  if (flag == null || flag.trim().length === 0) {
+    return process.env.NODE_ENV !== "production";
+  }
+  return parseBoolean(flag);
+};
+
 export const ensureProvidersBootstrapped = () => {
   if (bootstrapped) {
     return;
   }
 
+  const enableDemoProviders = shouldEnableDemoProviders();
   const { ephemerisRegistered } = registerServerProviders();
 
-  if (!ephemerisRegistered) {
+  if (enableDemoProviders && !ephemerisRegistered) {
     registerProvider({
       key: "ephemeris",
       provider: new DemoEphemerisProvider(),
     });
   }
 
-  registerProvider({
-    key: "chineseCalendar",
-    provider: new SolarlunarChineseCalendarProvider(),
-  });
-  registerProvider({
-    key: "zwds",
-    provider: new ClassicZWDSProvider(),
-  });
-  registerProvider({
-    key: "qmdj",
-    provider: new LoShuQMDJProvider(),
-  });
-  registerProvider({
-    key: "fs",
-    provider: new TraditionalFSProvider(),
-  });
-  registerProvider({
-    key: "hd",
-    provider: new HumanDesignGateProvider(),
-  });
-  registerProvider({
-    key: "gk",
-    provider: new GeneKeysProfileProvider(),
-  });
+  if (enableDemoProviders) {
+    registerProvider({
+      key: "chineseCalendar",
+      provider: new SolarlunarChineseCalendarProvider(),
+    });
+    registerProvider({
+      key: "zwds",
+      provider: new ClassicZWDSProvider(),
+    });
+    registerProvider({
+      key: "qmdj",
+      provider: new LoShuQMDJProvider(),
+    });
+    registerProvider({
+      key: "fs",
+      provider: new TraditionalFSProvider(),
+    });
+    registerProvider({
+      key: "hd",
+      provider: new HumanDesignGateProvider(),
+    });
+    registerProvider({
+      key: "gk",
+      provider: new GeneKeysProfileProvider(),
+    });
+  }
 
   bootstrapped = true;
 };

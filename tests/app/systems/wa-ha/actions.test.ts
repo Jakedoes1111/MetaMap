@@ -3,8 +3,27 @@ import { persistEphemerisResults } from "@/app/systems/wa-ha/actions";
 import { listDatasetRows, resetDatasetStore } from "@/server/datasets";
 
 const SAMPLE_POSITIONS = [
-  { name: "Sun", longitude: 150.1234, house: 3 },
-  { name: "Moon", longitude: 210.9876 },
+  {
+    id: "sun",
+    name: "Sun",
+    longitude: 150.1234,
+    latitude: 0.1,
+    distance: 1,
+    longitudeSpeed: 0.98,
+    latitudeSpeed: 0.01,
+    distanceSpeed: 0,
+    house: 3,
+  },
+  {
+    id: "moon",
+    name: "Moon",
+    longitude: 210.9876,
+    latitude: -0.5,
+    distance: 0.00257,
+    longitudeSpeed: 13.2,
+    latitudeSpeed: 0.12,
+    distanceSpeed: 0,
+  },
 ];
 
 describe("persistEphemerisResults", () => {

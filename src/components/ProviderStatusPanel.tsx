@@ -1,16 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { useStore } from "@/store/useStore";
 
 export const ProviderStatusPanel = () => {
   const { providerStatus, fetchProviderStatus, providerErrors, providerLoading } = useStore(
-    (state) => ({
+    useShallow((state) => ({
       providerStatus: state.providerStatus,
       fetchProviderStatus: state.fetchProviderStatus,
       providerErrors: state.providerErrors,
       providerLoading: state.providerLoading,
-    }),
+    })),
   );
 
   useEffect(() => {

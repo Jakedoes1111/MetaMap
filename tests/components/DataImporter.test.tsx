@@ -14,7 +14,7 @@ vi.mock("@/lib/csv", async () => {
 });
 
 const { parseCsv } = await import("@/lib/csv");
-const parseCsvMock = parseCsv as unknown as vi.Mock;
+const parseCsvMock = vi.mocked(parseCsv);
 
 const mockRow: DataRow = {
   id: "11111111-1111-1111-1111-111111111111",

@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { useStore } from "@/store/useStore";
 import type { MetaMapStore } from "@/store/useStore";
 import { useStoreHydration } from "@/hooks/useStoreHydration";
@@ -13,11 +14,11 @@ import { FilterBar } from "@/components/FilterBar";
 const TimelinePage = () => {
   const hydrated = useStoreHydration();
   const selection: Pick<MetaMapStore, "dataset" | "filters" | "birthDetails"> = useStore(
-    (state) => ({
+    useShallow((state) => ({
       dataset: state.dataset,
       filters: state.filters,
       birthDetails: state.birthDetails,
-    }),
+    })),
   );
   const { dataset, filters, birthDetails } = selection;
 

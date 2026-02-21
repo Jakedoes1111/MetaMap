@@ -1,11 +1,12 @@
 {
   "name": "metamap",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3010",
     "build": "next build",
     "start": "next start -p 3010",
+    "type-check": "tsc --noEmit",
     "lint": "eslint . --max-warnings=0",
     "format": "prettier --write .",
     "test": "vitest",
@@ -13,7 +14,8 @@
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:update": "playwright test --update-snapshots",
-    "prepare": "playwright install --with-deps"
+    "playwright:install": "playwright install chromium",
+    "playwright:install:ci": "playwright install --with-deps chromium"
   },
   "dependencies": {
     "@tanstack/react-virtual": "^3.10.8",
@@ -22,12 +24,12 @@
     "clsx": "^2.1.1",
     "d3": "^7.9.0",
     "luxon": "^3.5.0",
-    "next": "16.0.0",
+    "next": "^16.1.6",
     "papaparse": "^5.4.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "solarlunar": "^2.0.7",
-    "swisseph": "^0.5.17",
+    "swisseph": "^0.5.5",
     "zod": "^3.23.8",
     "zustand": "^5.0.1"
   },
@@ -50,8 +52,9 @@
     "@vitest/coverage-v8": "^2.1.4",
     "@vitest/ui": "^2.1.4",
     "autoprefixer": "^10.4.20",
+    "baseline-browser-mapping": "^2.10.0",
     "eslint": "^9.14.0",
-    "eslint-config-next": "16.0.0",
+    "eslint-config-next": "^16.1.6",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.3",
     "eslint-plugin-react-hooks": "^5.0.0",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { WarningBanner } from "@/components/WarningBanner";
 import { SystemPageLayout } from "@/components/SystemPageLayout";
 import { useStore } from "@/store/useStore";
@@ -26,7 +27,7 @@ const QmdjPage = () => {
     clearProviderError,
     appendRow,
     pruneRows,
-  } = useStore((state) => ({
+  } = useStore(useShallow((state) => ({
     birthDetails: state.birthDetails,
     invokeProvider: state.invokeProvider,
     providerLoading: state.providerLoading,
@@ -34,7 +35,7 @@ const QmdjPage = () => {
     clearProviderError: state.clearProviderError,
     appendRow: state.appendRow,
     pruneRows: state.pruneRows,
-  }));
+  })));
 
   const [school, setSchool] = useState<(typeof schools)[number]>("Zhi Run");
   const [arrangement, setArrangement] = useState<"yang" | "yin">("yang");

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { useStore } from "@/store/useStore";
 import type { MetaMapStore } from "@/store/useStore";
 import { useStoreHydration } from "@/hooks/useStoreHydration";
@@ -26,12 +27,12 @@ export default function Home() {
   const selection: Pick<
     MetaMapStore,
     "dataset" | "filters" | "tzdbVersion" | "birthDetails"
-  > = useStore((state) => ({
+  > = useStore(useShallow((state) => ({
     dataset: state.dataset,
     filters: state.filters,
     tzdbVersion: state.tzdbVersion,
     birthDetails: state.birthDetails,
-  }));
+  })));
   const { dataset, filters, tzdbVersion, birthDetails } = selection;
 
   const filteredRows = useMemo(() => applyFilters(dataset, filters), [dataset, filters]);

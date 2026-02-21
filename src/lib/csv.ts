@@ -25,6 +25,14 @@ const ensureWeight = (system: System, weight?: unknown) => {
 const ensureVerbatim = (text?: unknown) =>
   typeof text === "string" && text.trim().length > 0 ? text : UNKNOWN_TOKEN;
 
+const toNullableString = (value: unknown): string | null => {
+  if (value == null) {
+    return null;
+  }
+  const text = String(value).trim();
+  return text.length > 0 ? text : null;
+};
+
 export const parseCsv = (content: string): { rows: DataRow[]; errors: ParseError[] } => {
   const results = Papa.parse<Record<string, string>>(content, {
     header: true,
@@ -49,11 +57,11 @@ export const parseCsv = (content: string): { rows: DataRow[]; errors: ParseError
       verbatim_text: ensureVerbatim(raw.verbatim_text),
       category: raw.category,
       subcategory: raw.subcategory ?? "",
-      direction_cardinal: raw.direction_cardinal ?? "",
+      direction_cardinal: (raw.direction_cardinal ?? "").trim(),
       direction_degrees: toNumberOrNull(raw.direction_degrees),
-      timing_window_start: raw.timing_window_start ?? null,
-      timing_window_end: raw.timing_window_end ?? null,
-      polarity: raw.polarity as DataRow["polarity"],
+      timing_window_start: toNullableString(raw.timing_window_start),
+      timing_window_end: toNullableString(raw.timing_window_end),
+      polarity: (raw.polarity ?? "").trim() as DataRow["polarity"],
       strength: Number(raw.strength),
       confidence: Number(raw.confidence),
       weight_system: ensureWeight(raw.system as System, raw.weight_system),
@@ -108,11 +116,11 @@ export const parseJson = (content: string): { rows: DataRow[]; errors: ParseErro
         verbatim_text: ensureVerbatim(raw.verbatim_text),
         category: raw.category,
         subcategory: (raw.subcategory as string) ?? "",
-        direction_cardinal: (raw.direction_cardinal as string) ?? "",
+        direction_cardinal: ((raw.direction_cardinal as string) ?? "").trim(),
         direction_degrees: toNumberOrNull(raw.direction_degrees),
-        timing_window_start: (raw.timing_window_start as string) ?? null,
-        timing_window_end: (raw.timing_window_end as string) ?? null,
-        polarity: raw.polarity as DataRow["polarity"],
+        timing_window_start: toNullableString(raw.timing_window_start),
+        timing_window_end: toNullableString(raw.timing_window_end),
+        polarity: String(raw.polarity ?? "").trim() as DataRow["polarity"],
         strength: Number(raw.strength),
         confidence: Number(raw.confidence),
         weight_system: ensureWeight(raw.system as System, raw.weight_system),

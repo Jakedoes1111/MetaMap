@@ -3,6 +3,7 @@
 import { DateTime } from "luxon";
 import { useMemo } from "react";
 import { getTimeZones } from "@vvo/tzdb";
+import { useShallow } from "zustand/react/shallow";
 import type { BirthDetails } from "@/store/useStore";
 import { useStore } from "@/store/useStore";
 
@@ -20,11 +21,11 @@ const zodiacs = ["Tropical", "Sidereal"] as const;
 const timeZoneOptions = getTimeZones();
 
 export const BirthDetailsCard = () => {
-  const { birthDetails, setBirthDetails, confirmTimezone } = useStore((state) => ({
+  const { birthDetails, setBirthDetails, confirmTimezone } = useStore(useShallow((state) => ({
     birthDetails: state.birthDetails,
     setBirthDetails: state.setBirthDetails,
     confirmTimezone: state.confirmTimezone,
-  }));
+  })));
 
   const dateTimePreview = useMemo(() => {
     const iso = `${birthDetails.birthDate}T${birthDetails.birthTime}`;

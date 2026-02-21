@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { DateTime } from "luxon";
+import { useShallow } from "zustand/react/shallow";
 import { WarningBanner } from "@/components/WarningBanner";
 import { SystemPageLayout } from "@/components/SystemPageLayout";
 import { useStore } from "@/store/useStore";
@@ -50,7 +51,7 @@ const JaPage = () => {
     setBirthDetails,
     appendRow,
     pruneRows,
-  } = useStore((state) => ({
+  } = useStore(useShallow((state) => ({
     birthDetails: state.birthDetails,
     invokeProvider: state.invokeProvider,
     providerLoading: state.providerLoading,
@@ -59,7 +60,7 @@ const JaPage = () => {
     setBirthDetails: state.setBirthDetails,
     appendRow: state.appendRow,
     pruneRows: state.pruneRows,
-  }));
+  })));
 
   const [nakshatra, setNakshatra] = useState<string | null>(null);
   const [dashas, setDashas] = useState<
