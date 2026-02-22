@@ -29,6 +29,11 @@ MetaMap solves a common problem: self-model systems (astrology, numerology, huma
 - ♿ **Accessibility** - WCAG AA compliant with focus styles and prefers-reduced-motion support
 - 📱 **Responsive Design** - Works seamlessly on desktop and mobile devices
 
+## 🧭 Project Docs
+
+- Roadmap: [`ROADMAP.md`](ROADMAP.md)
+- Session learnings: [`Learnings/`](Learnings/)
+
 ---
 
 ## 🚀 Getting Started
