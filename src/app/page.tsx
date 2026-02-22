@@ -48,7 +48,21 @@ export default function Home() {
   );
 
   if (!hydrated) {
-    return null;
+    return (
+      <main className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-10 lg:px-8">
+        <header className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-semibold">MetaMap</h1>
+            <p className="text-sm text-muted">
+              Restoring local workspace state and provider metadata.
+            </p>
+          </div>
+        </header>
+        <section className="rounded-lg border border-muted/50 bg-white p-4 shadow-card dark:bg-slate-900">
+          <p className="text-sm text-muted">Loading dashboard...</p>
+        </section>
+      </main>
+    );
   }
 
   return (

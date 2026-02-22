@@ -21,7 +21,22 @@ const CompassPage = () => {
   const filteredRows = useMemo(() => applyFilters(dataset, filters), [dataset, filters]);
 
   if (!hydrated) {
-    return null;
+    return (
+      <main className="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-10 lg:px-6">
+        <header className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h1 className="text-2xl font-semibold">Direction compass</h1>
+            <p className="text-sm text-muted">Restoring your local data snapshot…</p>
+          </div>
+          <Link href="/" className="text-sm font-semibold text-accent hover:underline">
+            ← Back to overview
+          </Link>
+        </header>
+        <p className="rounded bg-[hsl(var(--colour-banner))] px-3 py-2 text-sm text-muted">
+          Loading compass data...
+        </p>
+      </main>
+    );
   }
 
   const directionalRows = filteredRows.filter(

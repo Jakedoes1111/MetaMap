@@ -28,7 +28,7 @@ export async function POST(request: Request, context: ProviderParams) {
     );
   }
 
-  ensureProvidersBootstrapped();
+  await ensureProvidersBootstrapped();
 
   try {
     // Ensure provider exists before accepting the payload.

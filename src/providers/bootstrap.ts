@@ -9,6 +9,7 @@ import { HumanDesignGateProvider } from "@/providers/hd/HumanDesignGateProvider"
 import { GeneKeysProfileProvider } from "@/providers/gk/GeneKeysProfileProvider";
 
 let bootstrapped = false;
+let bootstrapPromise: Promise<void> | null = null;
 
 const parseBoolean = (value?: string) => {
   if (!value) {
@@ -25,13 +26,9 @@ const shouldEnableDemoProviders = () => {
   return parseBoolean(flag);
 };
 
-export const ensureProvidersBootstrapped = () => {
-  if (bootstrapped) {
-    return;
-  }
-
+const bootstrapProviders = async () => {
   const enableDemoProviders = shouldEnableDemoProviders();
-  const { ephemerisRegistered } = registerServerProviders();
+  const { ephemerisRegistered } = await registerServerProviders();
 
   if (enableDemoProviders && !ephemerisRegistered) {
     registerProvider({
@@ -68,4 +65,18 @@ export const ensureProvidersBootstrapped = () => {
   }
 
   bootstrapped = true;
+};
+
+export const ensureProvidersBootstrapped = async () => {
+  if (bootstrapped) {
+    return;
+  }
+
+  if (!bootstrapPromise) {
+    bootstrapPromise = bootstrapProviders().finally(() => {
+      bootstrapPromise = null;
+    });
+  }
+
+  await bootstrapPromise;
 };

@@ -5,7 +5,7 @@ import { ensureProvidersBootstrapped } from "@/providers/bootstrap";
 export const revalidate = 0;
 
 export async function GET() {
-  ensureProvidersBootstrapped();
+  await ensureProvidersBootstrapped();
   const providers = listProviderStatus();
   return NextResponse.json({ providers });
 }

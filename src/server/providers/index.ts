@@ -1,12 +1,12 @@
 import { registerProvider } from "@/providers";
 import { AstronomyEngineEphemerisProvider } from "@/providers/ephemeris/AstronomyEngineEphemerisProvider";
-import { SwissEphemerisAdapter } from "./ephemeris/SwissEphemerisAdapter";
 import { resolveSwissEphemerisConfig } from "./ephemeris/config";
 
-export const registerServerProviders = () => {
+export const registerServerProviders = async () => {
   const config = resolveSwissEphemerisConfig();
   if (config.enabled) {
     try {
+      const { SwissEphemerisAdapter } = await import("./ephemeris/SwissEphemerisAdapter");
       registerProvider({
         key: "ephemeris",
         provider: new SwissEphemerisAdapter(config),
