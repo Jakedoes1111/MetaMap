@@ -166,12 +166,20 @@ The app includes demo providers for Ephemeris, Chinese Calendar, Zi Wei Dou Shu,
 
 Copy `.env.example` to `.env.local` and set values for your deployment:
 
+- `APP_VERSION` (**required in production**)
 - `NEXT_PUBLIC_ENABLE_DEMO_PROVIDERS` (default non-production: `true`, production: `false`)
 - `SWISS_EPHEMERIS_ENABLED`
 - `SWISS_EPHEMERIS_ENGINE` (`swiss`, `moshier`, `jpl`)
 - `SWISS_EPHEMERIS_DATA_PATH`, `SWISS_EPHEMERIS_JPL_FILE`
 - `SWISS_EPHEMERIS_DEFAULT_HOUSE_SYSTEM`, `SWISS_EPHEMERIS_DEFAULT_AYANAMSA`
 - `SWISS_EPHEMERIS_LICENSE_KEY`, `SWISS_EPHEMERIS_LICENSE_FILE`
+- `API_MAX_BODY_BYTES` (default `262144`)
+- `RATE_LIMIT_PROVIDER_WINDOW_MS` (default `60000`)
+- `RATE_LIMIT_PROVIDER_MAX_REQUESTS` (default `120`)
+- `ALLOWED_ORIGINS` (comma-separated origin allowlist for API routes)
+- `ERROR_WEBHOOK_URL` (optional webhook endpoint for server-side exception forwarding)
+
+Runtime config is validated at startup on server routes. Invalid production config fails fast with an explicit error.
 
 ### 🔌 Integrating Your Own Providers
 
@@ -202,6 +210,11 @@ MetaMap follows strict principles:
 ### ❤️ Health Check
 
 Runtime health is exposed at `GET /api/health` for container probes and uptime checks.
+
+GitHub Actions includes a scheduled uptime workflow (`.github/workflows/uptime-healthcheck.yml`) that can monitor this endpoint and dispatch webhook alerts. Configure repository secrets:
+
+- `UPTIME_HEALTH_URL` (required)
+- `UPTIME_ALERT_WEBHOOK` (optional)
 
 ### 📚 References
 
@@ -241,6 +254,17 @@ npm run test:e2e
 ```
 
 For CI runners, use: `npm run playwright:install:ci`
+
+### 🔁 CI Matrix
+
+`main` and pull requests run GitHub Actions checks for:
+
+- Type-check
+- Lint
+- Unit tests with coverage (`npm run test:ci`)
+- Production build
+- Dependency audit (`npm audit --omit=dev --audit-level=high`)
+- Playwright E2E (after quality checks pass)
 
 ---
 

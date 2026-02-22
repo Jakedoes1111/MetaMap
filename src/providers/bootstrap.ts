@@ -7,27 +7,13 @@ import { LoShuQMDJProvider } from "@/providers/qmdj/LoShuQMDJProvider";
 import { TraditionalFSProvider } from "@/providers/fs/TraditionalFSProvider";
 import { HumanDesignGateProvider } from "@/providers/hd/HumanDesignGateProvider";
 import { GeneKeysProfileProvider } from "@/providers/gk/GeneKeysProfileProvider";
+import { getRuntimeConfig } from "@/server/config/runtime";
 
 let bootstrapped = false;
 let bootstrapPromise: Promise<void> | null = null;
 
-const parseBoolean = (value?: string) => {
-  if (!value) {
-    return false;
-  }
-  return /^(true|1|yes|on)$/i.test(value.trim());
-};
-
-const shouldEnableDemoProviders = () => {
-  const flag = process.env.NEXT_PUBLIC_ENABLE_DEMO_PROVIDERS;
-  if (flag == null || flag.trim().length === 0) {
-    return process.env.NODE_ENV !== "production";
-  }
-  return parseBoolean(flag);
-};
-
 const bootstrapProviders = async () => {
-  const enableDemoProviders = shouldEnableDemoProviders();
+  const enableDemoProviders = getRuntimeConfig().enableDemoProviders;
   const { ephemerisRegistered } = await registerServerProviders();
 
   if (enableDemoProviders && !ephemerisRegistered) {

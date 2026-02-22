@@ -7,9 +7,18 @@ on:
   pull_request:
 
 jobs:
-  validate:
+  quality:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        check:
+          - type-check
+          - lint
+          - test:ci
+          - build
+          - audit
 
     steps:
       - name: Checkout
@@ -24,22 +33,34 @@ jobs:
       - name: Install dependencies
         run: npm ci --ignore-scripts
 
-      - name: Type check
-        run: npm run type-check
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Unit tests
-        run: npm run test -- --run
-
-      - name: Build
-        run: npm run build
+      - name: Run ${{ matrix.check }}
+        run: |
+          case "${{ matrix.check }}" in
+            type-check)
+              npm run type-check
+              ;;
+            lint)
+              npm run lint
+              ;;
+            test:ci)
+              npm run test:ci
+              ;;
+            build)
+              npm run build
+              ;;
+            audit)
+              npm audit --omit=dev --audit-level=high
+              ;;
+            *)
+              echo "Unknown check: ${{ matrix.check }}"
+              exit 1
+              ;;
+          esac
 
   e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    needs: validate
+    needs: quality
 
     steps:
       - name: Checkout

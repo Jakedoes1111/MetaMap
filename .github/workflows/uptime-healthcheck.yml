@@ -1,0 +1,48 @@
+name: Uptime Healthcheck
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  healthcheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Validate required secrets
+        run: |
+          if [ -z "${{ secrets.UPTIME_HEALTH_URL }}" ]; then
+            echo "Missing required secret: UPTIME_HEALTH_URL"
+            exit 1
+          fi
+
+      - name: Probe /api/health
+        id: probe
+        run: |
+          set -euo pipefail
+          status_code=$(curl -sS --connect-timeout 5 --max-time 15 -o /tmp/health.json -w "%{http_code}" "${{ secrets.UPTIME_HEALTH_URL }}")
+          echo "status_code=$status_code" >> "$GITHUB_OUTPUT"
+          echo "Health response:"
+          cat /tmp/health.json || true
+
+          if [ "$status_code" != "200" ]; then
+            echo "Healthcheck failed with HTTP $status_code"
+            exit 1
+          fi
+
+      - name: Send failure alert webhook
+        if: failure() && secrets.UPTIME_ALERT_WEBHOOK != ''
+        run: |
+          set -euo pipefail
+          timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          status_code="${{ steps.probe.outputs.status_code }}"
+          if [ -z "$status_code" ]; then
+            status_code="n/a"
+          fi
+          payload="{\"text\":\"MetaMap healthcheck failed at ${timestamp} UTC. URL: ${{ secrets.UPTIME_HEALTH_URL }}. HTTP status: ${status_code}.\"}"
+          curl -sS -X POST \
+            -H "Content-Type: application/json" \
+            --data "$payload" \
+            "${{ secrets.UPTIME_ALERT_WEBHOOK }}"
