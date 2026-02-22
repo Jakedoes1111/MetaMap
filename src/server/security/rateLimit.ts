@@ -25,6 +25,10 @@ const getRateLimitStore = () => {
   return scope.__metamapRateLimitStore;
 };
 
+export const resetRateLimitStoreForTests = () => {
+  getRateLimitStore().clear();
+};
+
 export const applyRateLimit = ({
   key,
   maxRequests,

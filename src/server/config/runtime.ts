@@ -122,6 +122,10 @@ export interface RuntimeConfig {
 
 let runtimeConfigCache: RuntimeConfig | null = null;
 
+export const resetRuntimeConfigForTests = () => {
+  runtimeConfigCache = null;
+};
+
 export const getRuntimeConfig = (): RuntimeConfig => {
   if (runtimeConfigCache) {
     return runtimeConfigCache;
