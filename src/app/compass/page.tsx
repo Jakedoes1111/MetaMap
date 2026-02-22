@@ -26,7 +26,7 @@ const CompassPage = () => {
         <header className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="text-2xl font-semibold">Direction compass</h1>
-            <p className="text-sm text-muted">Restoring your local data snapshot…</p>
+            <p className="text-sm text-muted">Restoring your local data snapshot...</p>
           </div>
           <Link href="/" className="text-sm font-semibold text-accent hover:underline">
             ← Back to overview
